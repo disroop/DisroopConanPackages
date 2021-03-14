@@ -2,8 +2,10 @@ import os
 from conans import ConanFile, CMake, tools
 
 core_version="5.6.0_cm4"
-project_username = os.getenv("CONAN_USERNAME")
-project_channel = os.getenv("CONAN_CHANNEL")
+
+project_version = os.getenv("PROJECT_VERSION", "snapshot")
+project_username = os.getenv("CONAN_USERNAME", "disroop")
+project_channel = os.getenv("CONAN_CHANNEL", "development")
 
 
 class Stm32CmsisCore(ConanFile):

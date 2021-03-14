@@ -3,8 +3,9 @@ import os
 from conans import ConanFile, CMake, tools
 
 device_version="1.7.1"
-project_username = os.getenv("CONAN_USERNAME")
-project_channel = os.getenv("CONAN_CHANNEL")
+project_version = os.getenv("PROJECT_VERSION", "snapshot")
+project_username = os.getenv("CONAN_USERNAME", "disroop")
+project_channel = os.getenv("CONAN_CHANNEL", "development")
 
 
 class Stm32CmsisDeviceL4(ConanFile):
