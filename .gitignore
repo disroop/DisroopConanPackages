@@ -3,3 +3,5 @@ to ignore  to folder by running conan source . -sf source
 source/
 
 .idea
+
+__pycache__
