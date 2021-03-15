@@ -1,10 +1,8 @@
-# This is a basic workflow to help you get started with Actions
-
-name: CI
+name: Build
 
 # Controls when the action will run. 
 on:
-  # Triggers the workflow on push or pull request events but only for the master branch
+  # Triggers the workflow on push or pull request events but only for the master branch and if tags are created 
   push:
     branches: [ master ]
     paths: 
@@ -18,8 +16,6 @@ on:
   create:
     tags: [docker-v*.*.*]
     
-
-  # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
   
 jobs:
@@ -37,10 +33,10 @@ jobs:
           logout: true
         
       - name: build 
-        run: python3 ./createWithDocker.py
+        run: python3 ./build-docker.py
             
       - name: push
-        if: contains(github.refs, "refs/tags/docker-v*.*.*")
-        run: echo "I only run if the branch has docke-v in its name! ${{ github.ref }}"
+        if: contains(github.ref, "refs/tags/docker-v*.*.*")
+        run: python3 ./build-docker.py --gitref ${{ github.ref }}
       
         
