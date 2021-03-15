@@ -15,7 +15,7 @@ def docker_build_push(target, name, version, push=False):
         run(f'docker build --target {target} -t {name}:{version} .')
     if push:
         run(f'docker push {name}:{version}')
-        print(f"docker image {name}:{version} pushed")
+        print(f"docker image {name}:{version} was pushed!")
 
 if __name__ == '__main__':
     args = get_args()
