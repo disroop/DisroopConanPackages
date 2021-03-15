@@ -4,4 +4,6 @@ source/
 
 .idea
 
+#Python
 __pycache__
+.ropeproject
