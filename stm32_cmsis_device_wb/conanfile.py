@@ -19,6 +19,30 @@ class Stm32CmsisDeviceL4(ConanFile):
     generators = "virtualenv", "cmake"
     settings = "os", "compiler", "build_type", "arch"
     exports_sources = "CMakeLists.txt"
+    options = {
+        "STM32WB": [True, False],
+        "USE_HAL_DRIVER": [True, False],
+        "STM32WB55_DEVICE": [
+            "STM32WB55xx",
+            "STM32WB5Mxx",
+            "STM32WB50xx",
+            "STM32WB35xx",
+            "STM32WB30xx",
+            "STM32WB15xx",
+            "STM32WB10xx",
+        ],
+        # todo
+        # "hse_value": "ANY",  # (32000000UL) /*!< Value of the External oscillator in Hz */
+        # "msi_value": "ANY",  # (4000000UL) /*!< Value of the Internal oscillator in Hz*/
+        # "hsi_value": "ANY",  # (16000000UL) /*!< Value of the Internal oscillator in Hz*/
+        # "lsi_value": "ANY",  # (32000UL)       /*!< Value of LSI in Hz*/
+        # "lse_value": "ANY",  # (32768UL)    /*!< Value of LSE in Hz*/
+        # USER_VECT_TAB_ADDRESS
+        #     VECT_TAB_SRAM
+        # VECT_TAB_BASE_ADDRESS
+        #     VECT_TAB_OFFSET
+    }
+    _cmake = None
 
     def requirements(self):
         self.requires(f"stm32_cmsis_core/5.6.0_cm4@{project_username}/{project_channel}")
@@ -39,7 +63,17 @@ class Stm32CmsisDeviceL4(ConanFile):
             self.cpp_info.libs.append(f"{self.name}")
         self.cpp_info.defines.append("STM32WB55xx")
 
+    def _configure_cmake(self):
+        if self._cmake:
+            return self._cmake
+        self._cmake = CMake(self)
+        self._cmake.definitions["STM32WB"] = self.options.STM32WB
+        self._cmake.definitions["USE_HAL_DRIVER"] = not self.options.USE_HAL_DRIVER
+        self._cmake.definitions["STM32WB55_DEVICE"] = not self.options.STM32WB55_DEVICE
+        # self._cmake.configure(build_folder=self._build_subfolder)
+        return self._cmake
+
     def build(self):
-        cmake = CMake(self)
+        cmake = self._configure_cmake()
         cmake.configure()
         cmake.build()
