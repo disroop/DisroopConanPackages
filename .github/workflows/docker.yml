@@ -7,10 +7,10 @@ on:
   # Triggers the workflow on push or pull request events but only for the master branch
   push:
     branches: [ master ]
-    paths: Dockerfile
+    paths: Dockerfile, build-docker.py
   pull_request:
     branches: [ master ]
-    paths: Dockerfile
+    paths: Dockerfile, build-docker.py
   create:
     tags: [docker-v*.*.*]
     
