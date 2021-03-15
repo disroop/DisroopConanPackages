@@ -1,4 +1,4 @@
-name: Build
+name: Docker-Build
 
 # Controls when the action will run. 
 on:
@@ -6,35 +6,30 @@ on:
   push:
     branches: [ master ]
     paths: 
-      - 'Dockerfile'
-      - 'build-docker.py'
+      - '**/Dockerfile'
+      - '**/build-docker.py'
   pull_request:
     branches: [ master ]
     paths: 
-      - 'Dockerfile'
-      - 'build-docker.py'
+      - '**/Dockerfile'
+      - '**/build-docker.py'
   create:
     tags: [docker-v*.*.*]
-    
   workflow_dispatch:
   
 jobs:
   build:
     runs-on: ubuntu-latest
-    
     steps:
-      - uses: actions/checkout@v2
-          
+      - uses: actions/checkout@v2    
       - name: login
         uses: docker/login-action@v1.8.0
         with:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_ACCESS_TOKEN }}
           logout: true
-        
       - name: build 
-        run: python3 ./build-docker.py
-            
+        run: python3 ./build-docker.py   
       - name: push
         if: contains(github.ref, "refs/tags/docker-v*.*.*")
         run: python3 ./build-docker.py --gitref ${{ github.ref }}
