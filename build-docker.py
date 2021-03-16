@@ -25,5 +25,6 @@ if __name__ == '__main__':
     if ref.startswith("refs/tags/docker-v"):
         dockerversion=ref.replace("refs/tags/docker-v", "")
         pushImage = True
+    docker_build_push('build-system','embedded-hipster',dockerversion,pushImage)
     docker_build_push('ssh-server','embedded-hipster-ssh',dockerversion,pushImage)
         

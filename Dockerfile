@@ -11,10 +11,9 @@ RUN apt-get update && apt-get install --no-install-recommends -y \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
-##Remove python 2.7 us pyhton3 as default
-#RUN apt purge -y python\
-#    && ln -s /usr/bin/python3 /usr/bin/python \
-#    && ln -s /usr/bin/pip3 /usr/bin/pip
+#Remove python 2.7 us pyhton3 as default
+RUN ln -s /usr/bin/python3 /usr/bin/python \
+    && ln -s /usr/bin/pip3 /usr/bin/pip
 
 RUN pip3 install -Iv conan==1.34.1
 
