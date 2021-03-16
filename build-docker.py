@@ -11,11 +11,12 @@ def get_args():
 
 
 def docker_build_push(target, name, version, push=False):
+    dockerhubrepo="disroop"
     with chdir(os.path.dirname(os.path.realpath(__file__))):
-        run(f'docker build --target {target} -t {name}:{version} .')
+        run(f'docker build --target {target} -t {dockerhubrepo}/{name}:{version} .')
     if push:
-        run(f'docker push {name}:{version}')
-        print(f"docker image {name}:{version} was pushed!")
+        run(f'docker push {dockerhubrepo}/{name}:{version}')
+        print(f"docker image {dockerhubrepo}/{name}:{version} was pushed!")
 
 if __name__ == '__main__':
     args = get_args()
