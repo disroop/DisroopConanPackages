@@ -4,7 +4,7 @@
 
 cmake_minimum_required(VERSION 3.16 FATAL_ERROR)
 #Include Conan
-include(${CMAKE_CURRENT_BINARY_DIR}/conan_env_toolchain.cmake)
+include(${CMAKE_CURRENT_BINARY_DIR}/cmake_vars.cmake)
 include(${CMAKE_CURRENT_BINARY_DIR}/conanbuildinfo.cmake)
 # Set the project name
 project(test CXX)

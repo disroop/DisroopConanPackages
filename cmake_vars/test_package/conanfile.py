@@ -15,7 +15,7 @@ class CmakeVarsGeneratorTest(ConanFile):
     default_channel = f"{project_channel}"
     default_user = f"{project_username}"
     settings = "os", "compiler", "build_type", "arch"
-    generators = "cmake", "env_cmake_toolchain"
+    generators = "cmake", "cmake_vars"
     exports_sources = "src/*", "CMakeLists.txt", "test/*"
     options = {"simulator": [True, False],
     }
