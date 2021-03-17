@@ -8,6 +8,8 @@ RUN apt-get update && apt-get install --no-install-recommends -y \
     python3=3.8.2-0ubuntu2 \
     python3-pip=20.0.2-5ubuntu1.1 \
     git=1:2.25.1-1ubuntu3 \
+    clang=1:10.0-50~exp1 \
+    ninja-build=1.10.0-1build1 \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
@@ -17,6 +19,7 @@ RUN ln -s /usr/bin/python3 /usr/bin/python \
 
 RUN pip3 install -Iv conan==1.34.1
 
+RUN conan config set general.cmake_generator=Ninja
 #Install Cmake 3.19.2
 RUN apt-get update
 
