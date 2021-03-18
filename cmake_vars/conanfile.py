@@ -49,8 +49,6 @@ class cmake_vars(Generator):
 class CmakeVarExport(ConanFile):
      name = "cmake_vars"
      version = "1.0.0"
-     channel = "release"
-     user = "disroop"
      url = "TODO"
      description = "This is a toolchain generator which exports environment variables and options from a conanfile."
      license = "MIT"

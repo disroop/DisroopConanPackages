@@ -18,6 +18,8 @@ RUN ln -s /usr/bin/python3 /usr/bin/python \
     && ln -s /usr/bin/pip3 /usr/bin/pip
 
 RUN pip3 install -Iv conan==1.34.1
+#TODO: This is only temporary
+RUN pip3 install eprint
 
 RUN conan config set general.cmake_generator=Ninja
 #Install Cmake 3.19.2
