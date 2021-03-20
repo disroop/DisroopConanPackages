@@ -1,7 +1,7 @@
 #!/usr/bin/python
 import os
-from tools.disroopbuildhelper import run, chdir
 import argparse
+import docker
 
 
 def get_args():
@@ -12,10 +12,11 @@ def get_args():
 
 def docker_build_push(target, name, version, push=False):
     dockerhubrepo="disroop"
-    with chdir(os.path.dirname(os.path.realpath(__file__))):
-        run(f'docker build --target {target} -t {dockerhubrepo}/{name}:{version} .')
+    client = docker.from_env()
+    current_path = os.getcwd()
+    client.images.build(path=current_path,target=target,tag=f'{dockerhubrepo}/{name}:{version}')
     if push:
-        run(f'docker push {dockerhubrepo}/{name}:{version}')
+        client.images.push(f"{dockerhubrepo}",tag=f'/{name}:{version}')
         print(f"docker image {dockerhubrepo}/{name}:{version} was pushed!")
 
 if __name__ == '__main__':

@@ -1,0 +1,22 @@
+{
+    "config":[
+        {
+            "hostprofile": "cortex-m4",
+            "buildprofile": "default",
+            "hostsettings": "build_type=Debug",
+            "excludes": ["test_package","cmake_vars","gcc_arm_none_eabi"],
+            "version": "snapshot",
+            "channel": "development",
+            "user": "disroop"
+        },
+        {
+            "hostprofile": "default",
+            "buildprofile": "default",
+            "hostsettings": "build_type=Debug",
+            "includes": ["cmake_vars","gcc_arm_none_eabi"],
+            "version": "snapshot",
+            "channel": "development",
+            "user": "disroop"
+        }
+    ]
+}
