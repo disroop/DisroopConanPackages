@@ -6,13 +6,11 @@ on:
   push:
     branches: [ master ]
     paths: 
-      - '**/Dockerfile'
-      - '**/build-docker.py'
+      - '**/docker/*'
   pull_request:
     branches: [ master ]
     paths: 
-      - '**/Dockerfile'
-      - '**/build-docker.py'
+      - '**/docker/*'
   create:
     tags: [docker-v*.*.*]
 
