@@ -16,8 +16,10 @@ def docker_build_push(target, name, version, push=False):
     current_path = os.getcwd()
     client.images.build(path=current_path,target=target,tag=f'{dockerhubrepo}/{name}:{version}')
     if push:
-        client.images.push(f"{dockerhubrepo}",tag=f'/{name}:{version}')
-        print(f"docker image {dockerhubrepo}/{name}:{version} was pushed!")
+        print(f"docker image {dockerhubrepo}/{name}:{version} push to server:")
+        serveroutput=client.images.push(f"{dockerhubrepo}/{name}",tag=f'{version}')
+        print(f'Server output: {serveroutput}')
+        
 
 if __name__ == '__main__':
     args = get_args()
