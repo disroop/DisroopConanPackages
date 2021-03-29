@@ -4,16 +4,14 @@
     "user": "disroop",
     "config":[
         {
-            "hostprofile": "cortex-m4",
-            "buildprofile": "default",
-            "hostsettings": "build_type=Debug",
-            "excludes": ["cmake_vars","gcc_arm_none_eabi"]
+            "hostsettings": ["build_type=Debug"],
+            "includes": ["cmake_vars","gcc_arm_none_eabi"]
         },
         {
-            "hostprofile": "default",
+            "hostprofile": ".profiles/gcc-arm-none-eabi-9",
             "buildprofile": "default",
-            "hostsettings": "build_type=Debug",
-            "includes": ["cmake_vars","gcc_arm_none_eabi"]
+            "hostsettings": ["build_type=Debug"],
+            "excludes": ["cmake_vars","gcc_arm_none_eabi"]
         }
     ]
 }

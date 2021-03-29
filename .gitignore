@@ -3,6 +3,7 @@ to ignore  to folder by running conan source . -sf source
 source/
 test_package
 .idea
+tmp/
 
 #Python
 __pycache__
