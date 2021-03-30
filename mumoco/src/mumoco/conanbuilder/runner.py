@@ -4,15 +4,21 @@ from pathlib import Path
 
 
 class Runner:
-    def __init__(self):
-        pass
 
-    def create_all(self, conan_packages, configurations):
-        config_counter = 0
+    def __init__(self,root_path, signature=Signature()):
+        self.packages = self._get_all_packages(root_path,signature=Signature())
+
+    def create_all(self, configurations):
         for config in configurations:
-            config_counter = config_counter + 1;
-            print(f"CONFIG {config_counter}")
-            for package in conan_packages:
+            print("#######################################\n"
+                  "########### create packages ###########\n"
+                  f"# host profile:  {config.hostprofile}\n"
+                  f"# build profile: {config.buildprofile}\n"
+                  f"# host settings: {config.hostsettings}\n"
+                  f"# includes:      {config.includes}\n"
+                  f"# excludes:      {config.excludes}\n"
+                  "#######################################\n")
+            for package in self.packages:
                 if package.is_withing_scope(config):
                     package.create(config)
 
@@ -36,6 +42,22 @@ class Runner:
                 conan_packages.append(Package(signature, path))
         return conan_packages
 
-    def export_all(self, conan_packages):
-        for package in conan_packages:
+    def export_all(self):
+        for package in self.packages:
             package.export()
+
+    def get_all_sources(self):
+        print(
+            "#######################################\n"
+            "########### download sources ##########\n"
+            "#######################################\n")
+        for package in self.packages:
+            package.source()
+
+    def remove_all_sources(self):
+        text = ()
+        print("#######################################\n"
+              "########### remove sources ############\n"
+              "#######################################\n")
+        for package in self.packages:
+            package.source_remove()
