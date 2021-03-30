@@ -20,8 +20,6 @@ class Stm32CmsisDeviceL4(ConanFile):
     settings = "os", "compiler", "build_type", "arch"
     exports_sources = "CMakeLists.txt"
     options = {
-        "STM32WB": [True, False],
-        "USE_HAL_DRIVER": [True, False],
         "STM32WB55_DEVICE": [
             "STM32WB55xx",
             "STM32WB5Mxx",
@@ -42,6 +40,9 @@ class Stm32CmsisDeviceL4(ConanFile):
         # VECT_TAB_BASE_ADDRESS
         #     VECT_TAB_OFFSET
     }
+    default_options={
+        "STM32WB55_DEVICE":"STM32WB55xx"
+    }
     _cmake = None
 
     def requirements(self):
@@ -61,14 +62,12 @@ class Stm32CmsisDeviceL4(ConanFile):
     def package_info(self):
         if self.settings.arch == "x86_64":
             self.cpp_info.libs.append(f"{self.name}")
-        self.cpp_info.defines.append("STM32WB55xx")
+        self.cpp_info.defines.append(self.options.STM32WB55_DEVICE)
 
     def _configure_cmake(self):
         if self._cmake:
             return self._cmake
         self._cmake = CMake(self)
-        self._cmake.definitions["STM32WB"] = self.options.STM32WB
-        self._cmake.definitions["USE_HAL_DRIVER"] = not self.options.USE_HAL_DRIVER
         self._cmake.definitions["STM32WB55_DEVICE"] = not self.options.STM32WB55_DEVICE
         # self._cmake.configure(build_folder=self._build_subfolder)
         return self._cmake

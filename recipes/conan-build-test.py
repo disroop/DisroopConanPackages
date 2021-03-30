@@ -6,22 +6,6 @@ from pathlib import Path
 from eprint import eprint
 import json
 from copy import copy
-import argparse
-
-from tools.scripts.util import chdir, run, execute
-
-
-def get_args():
-    parser = argparse.ArgumentParser()
-    parser.add_argument("--root", type=str, required=True, help="Path to root folder of multipackage module")
-    parser.add_argument("--config", type=str, required=False, help="Path to config-build.json")
-    parser.add_argument("--sources", action="store_true", required=False, help="Download sources to PACKAGE-PATH/tmp")
-    parser.add_argument("--create", action="store_true", required=False, help="Create all packages")
-    parser.add_argument("--sources-remove", action="store_true", required=False, help="Remove all sources")
-    parser.add_argument("--upload-repository", type=str, required=False, required=False, help="Upload all packages to repository")
-    parser.add_argument("--user",type=str, required=False, required=False, help="User credentials")
-    parser.add_argument("--token",type=str, required=False, required=False, help="Access token")
-    return parser.parse_args()
 
 conan_command_line, _, _ = Conan.factory()
 
@@ -173,6 +157,39 @@ class ConanPackage:
         conan_command_line.source(self.path,
                                  source_folder=f"{self.path}/tmp")
 
+    def get_build_order(self, configuration=BuilderConfig()):
+        installfolder = "/home/michel/projects/DisroopConanPackages/build"
+        print(configuration.host_profile)
+        # conan_command_line.install(path=self.path,
+        #                             name=self.name, 
+        #                             version=self._signature.version,
+        #                             user=self._signature.user,
+        #                             channel=self._signature.channel,
+        #                             profile_names=configuration.host_profile,
+        #                             profile_build=configuration.build_profile,
+        #                             settings=configuration.host_settings,
+        #                             install_folder= installfolder)
+        pattern = self.get_pattern()
+        conan_command_line.remove_locks()
+        conan_command_line.lock_create(path=None,
+            lockfile_out="app.lock",
+        reference=pattern,
+                                        profile_host=configuration.host_profile,
+                                        profile_build=configuration.build_profile,
+                                        build="missing")
+
+        #                             version=self._signature.version,
+        #                             user=self._signature.user,
+        #                             channel=self._signature.channel,
+        #                             profile_names=configuration.host_profile,
+        #                             profile_build=configuration.build_profile,
+        #                             settings=configuration.host_settings,
+        #                             install_folder= installfolder
+        #conan_command_line.info_build_order(reference=self.get_pattern(), 
+                                    # profile_names=configuration.host_profile,
+                                    # profile_build=configuration.build_profile,
+                                    # settings=configuration.host_settings,
+                                    # install_folder= installfolder)
 
 class ConfigReader:
     def __init__(self, path):
