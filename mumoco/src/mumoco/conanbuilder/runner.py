@@ -5,8 +5,8 @@ from conans.client.conan_api import Conan
 
 
 class Runner:
-    
-    def __init__(self,root_path, signature=Signature()):
+
+    def __init__(self, root_path, signature=Signature()):
         self.conanfactory, _, _ = Conan.factory()
         self.packages = self._get_all_packages(root_path, signature)
 
@@ -29,13 +29,13 @@ class Runner:
 
     # package_signature = get_package_signature()
     # package_pattern=f'{package_signature.name}/{package_signature.version}@{package_signature.user}/{package_signature.channel}'
-    ### conan_command_line.create(package.path,test_build_folder=f'/tmp/{package.pattern}/tbf')
+    # conan_command_line.create(package.path,test_build_folder=f'/tmp/{package.pattern}/tbf')
     # TODO:profiles_names =HOST, profiles_build=build
     # conan_command_line.authenticate()
     # conan_command_line.remote_add()
     # conan_command_line.upload(package_pattern)
     # print(f'SUCCESS: {package_pattern}')
-    def add_all_remotes(self, remotes):
+    def add_all_remotes(self, remotes, username=None, password=None):
           print(
             "#######################################\n"
             "########### add remote ##########\n"
@@ -43,11 +43,13 @@ class Runner:
         if remotes:
             for remote in remotes:
                 self.conanfactory.remote_add(remote_name=remote.name, url=remote.url, verify_ssl=remote.verify_ssl, insert=remote.priority, force=remote.force)
+                if remote.login:
+                    if not username or not password:
+                        raise Warning(f"Can't login to {remote.name} no username or password provided!")
+                    else:
+                        self.conanfactory.authenticate(name=username, password=password, remote_name=remote.name)
         else:
             raise Warning("No Remotes defined. Nothing to add!")
-
-    def sign_in(self, user, password, remote):
-        self.conanfactory.authenticate(name=user, password=password, remote_name=remote)
 
     def _get_all_packages(self, root_path, signature=Signature()) -> object:
         conan_packages = []

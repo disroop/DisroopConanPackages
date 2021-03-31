@@ -20,7 +20,7 @@ def get_args():
     parser.add_argument("--remotes", action="store_true", required=False, help="Add all remotes from config-build.json")
     parser.add_argument("--upload_repository", type=str, required=False, help="Upload all packages to repository")
     parser.add_argument("--user", type=str, required=False, help="User credentials")
-    parser.add_argument("--token", type=str, required=False, help="Access token")
+    parser.add_argument("--password", type=str, required=False, help="Access token")
     return parser.parse_args()
 
 
