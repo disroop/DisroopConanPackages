@@ -2,7 +2,7 @@
     "version": "snapshot",
     "channel": "development",
     "user": "disroop",
-    "config":[
+    "configurations":[
         {
             "hostsettings": ["build_type=Debug"],
             "includes": ["cmake_vars","gcc_arm_none_eabi"]
@@ -12,6 +12,12 @@
             "buildprofile": "default",
             "hostsettings": ["build_type=Debug"],
             "excludes": ["cmake_vars","gcc_arm_none_eabi"]
+        }
+    ],
+    "remotes": [
+        {
+            "name": "blu",
+            "url": "foo"
         }
     ]
 }
