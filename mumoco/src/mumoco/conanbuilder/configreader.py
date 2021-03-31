@@ -49,9 +49,11 @@ class ConfigReader:
                     if 'verifyssl' in p:
                         remote.verify_ssl = p['verifyssl']
                     if 'priority' in p:
-                        remote.verify_ssl = p['priority']
+                        remote.priority = p['priority']
                     if 'force' in p:
-                        remote.verify_ssl = p['force']
+                        remote.force = p['force']
+                    if 'login' in p:
+                        remote.login = p['login']
                     self._remotes.append(remote)
 
     def get_configurations(self):
