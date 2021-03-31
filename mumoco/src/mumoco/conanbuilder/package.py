@@ -7,13 +7,11 @@ from .buildersettings import BuilderSettings
 from .signature import Signature
 from conans.errors import ConanException
 
-conan_command_line, _, _ = Conan.factory()
-
-
 class Package:
     source_folder = "tmp"
 
-    def __init__(self, signature=Signature(), path='.'):
+    def __init__(self, conanfactory, signature=Signature(), path='.'):
+        self.conanfactory = conanfactory
         if ".py" not in path:
             path = f'{path}/conanfile.py'
         self.name = ""
@@ -30,7 +28,7 @@ class Package:
     def _get_attribute(self, path, attribute, fail_on_invalid=False):
         attribute = str(attribute)
         try:
-            conan_package = conan_command_line.inspect(path=f'{path}', attributes=[f'{attribute}'])
+            conan_package = self.conanfactory.inspect(path=f'{path}', attributes=[f'{attribute}'])
             return conan_package.get(attribute)
         except ConanException:
             if fail_on_invalid:
@@ -38,7 +36,7 @@ class Package:
         return ""
 
     def _read_package_attributes(self, path):
-        conan_package = conan_command_line.inspect(path=f'{path}', attributes=["name"])
+        conan_package = self.conanfactory.inspect(path=f'{path}', attributes=["name"])
         self.name = self._get_attribute(path, 'name', True)
         version = self._get_attribute(path, 'version')
         if version != "":
@@ -67,14 +65,14 @@ class Package:
         return True
 
     def export(self):
-        conan_command_line.export(self.path,
+        self.conanfactory.export(self.path,
                                   self.name,
                                   self._signature.version,
                                   self._signature.user,
                                   self._signature.channel)
 
     def create(self, configuration=BuilderSettings()):
-        conan_command_line.create(self.path,
+        self.conanfactory.create(self.path,
                                   name=self.name,
                                   version=self._signature.version,
                                   user=self._signature.user,
@@ -85,7 +83,7 @@ class Package:
                                   test_build_folder=f'/tmp/{self.pattern}/tbf')
 
     def source(self):
-        conan_command_line.source(self.path,
+        self.conanfactory.source(self.path,
                                   source_folder=f"{self.path}/{self.source_folder}")
 
     def source_remove(self):
