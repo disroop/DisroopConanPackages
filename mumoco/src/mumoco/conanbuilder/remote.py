@@ -1,5 +1,5 @@
 class Remote:
-    def __init__(self, name, url, verify_ssl=True, priority=0, force=False), login=False):
+    def __init__(self, name, url, verify_ssl=True, priority=0, force=False, login=False):
         self._name = name
         self._url = url
         self._verify_ssl = verify_ssl, 
