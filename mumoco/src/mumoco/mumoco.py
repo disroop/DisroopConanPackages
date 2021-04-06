@@ -19,8 +19,8 @@ def get_args():
     parser.add_argument("--remove", action="store_true", required=False, help="Remove all sources")
     parser.add_argument("--remotes", action="store_true", required=False, help="Add all remotes from config-build.json")
     parser.add_argument("--upload_repository", type=str, required=False, help="Upload all packages to repository")
-    parser.add_argument("--user", type=str, required=False, help="User credentials")
-    parser.add_argument("--password", type=str, required=False, help="Access token")
+    parser.add_argument("--user", type=str, required=False, default=None, help="User credentials")
+    parser.add_argument("--password", type=str, required=False, default=None, help="Access token")
     return parser.parse_args()
 
 
@@ -30,7 +30,7 @@ if __name__ == "__main__":
     config_reader.read()
     runner = Runner(args.root, config_reader.get_signature())
     if args.remotes:
-        runner.add_all_remotes(config_reader.get_remotes())
+        runner.add_all_remotes(config_reader.get_remotes(),args.user, args.password)
     if args.create:
         runner.export_all()
         runner.create_all(config_reader.get_configurations())

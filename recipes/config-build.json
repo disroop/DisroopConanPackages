@@ -16,8 +16,10 @@
     ],
     "remotes": [
         {
-            "name": "blu",
-            "url": "foo"
+            "name": "disroop-conan",
+            "url": "https://disroop.jfrog.io/artifactory/api/conan/disroop-conan",
+            "login": true,
+            "force": true
         }
     ]
 }

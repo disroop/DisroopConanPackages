@@ -36,7 +36,7 @@ class Runner:
     # conan_command_line.upload(package_pattern)
     # print(f'SUCCESS: {package_pattern}')
     def add_all_remotes(self, remotes, username=None, password=None):
-          print(
+        print(
             "#######################################\n"
             "########### add remote ##########\n"
             "#######################################\n")
