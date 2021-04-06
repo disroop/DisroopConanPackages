@@ -72,6 +72,7 @@ class Package:
                                   self._signature.channel)
 
     def create(self, configuration=BuilderSettings()):
+        pattern=self.get_pattern()
         self.conanfactory.create(self.path,
                                   name=self.name,
                                   version=self._signature.version,
@@ -80,7 +81,7 @@ class Package:
                                   profile_names=configuration.host_profile,
                                   profile_build=configuration.build_profile,
                                   settings=configuration.host_settings,
-                                  test_build_folder=f'/tmp/{self.pattern}/tbf')
+                                  test_build_folder=f'/tmp/{pattern}/tbf')
 
     def source(self):
         self.conanfactory.source(self.path,
@@ -88,3 +89,7 @@ class Package:
 
     def source_remove(self):
         shutil.rmtree(f"{self.path}/{self.source_folder}", ignore_errors=False, onerror=None);
+
+    def upload_package(self, remote):
+        pattern=self.get_pattern()
+        self.conanfactory.upload(pattern,package=None,remote_name=remote)
