@@ -14,9 +14,9 @@ class Runner:
         for config in configurations:
             print("#######################################\n"
                   "########### create packages ###########\n"
-                  f"# host profile:  {config.hostprofile}\n"
-                  f"# build profile: {config.buildprofile}\n"
-                  f"# host settings: {config.hostsettings}\n"
+                  f"# host profile:  {config.host_profile}\n"
+                  f"# build profile: {config.build_profile}\n"
+                  f"# host settings: {config.host_settings}\n"
                   f"# includes:      {config.includes}\n"
                   f"# excludes:      {config.excludes}\n"
                   "#######################################\n")
@@ -78,3 +78,11 @@ class Runner:
               "#######################################\n")
         for package in self.packages:
             package.source_remove()
+
+    def upload_all_packages(self, remote):
+        print("#######################################\n"
+              "########### upload packages ###########\n"
+              "#######################################\n")        
+        for package in self.packages:
+            package.upload_package(remote)
+        
