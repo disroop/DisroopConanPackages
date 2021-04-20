@@ -17,12 +17,15 @@ RUN apt-get update && apt-get install --no-install-recommends -y \
 RUN ln -s /usr/bin/python3 /usr/bin/python \
     && ln -s /usr/bin/pip3 /usr/bin/pip
 
-RUN pip3 install conan==1.34.1
-RUN pip3 install mumoco==0.1.2
+RUN pip3 install conan==1.35.0
+RUN pip3 install mumoco==0.2.0
 #TODO: This is only temporary
 RUN pip3 install eprint
 
-RUN conan config set general.cmake_generator=Ninja
+ADD setup.sh /run/setup.sh
+RUN chmod +x /run/setup.sh \
+    && ln -s /run/setup.sh /usr/bin/setup
+
 #Install Cmake 3.19.2
 RUN apt-get update
 
@@ -38,11 +41,69 @@ RUN apt-get install kitware-archive-keyring && rm /etc/apt/trusted.gpg.d/kitware
 
 RUN  apt-get install --no-install-recommends -y cmake
 
+#################### dev-environment ####################
+##### User: dev
+##########################################################
+FROM build-system AS dev
+ENV DEBIAN_FRONTEND=noninteractive
+ARG USERNAME=dev
+ARG USER_UID=1000
+ARG USER_GID=$USER_UID
+#
+#Install specific devtools
+RUN apt-get update && apt-get install --no-install-recommends -y \
+    vim=2:8.1.2269-1ubuntu5 \
+    sudo=1.8.31-1ubuntu1.2\
+    libncurses5 \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/* 
+
+#
+# Install Pylint
+RUN pip3 install pylint==2.6.0
+#
+#AddJlink Debugger Server
+ARG TMP_JLINK_TGZ=/tmp
+ARG TAR_NAME=JLink_Linux_x86_64.tgz
+ARG FOLDER_JLINK=/opt/segger_jlink_v692
+RUN wget https://www.segger.com/downloads/jlink/${TAR_NAME} --directory-prefix=$TMP_JLINK_TGZ --post-data="accept_license_agreement=accepted"
+RUN mkdir ${FOLDER_JLINK} && tar -xzvf $TMP_JLINK_TGZ/$TAR_NAME -C ${FOLDER_JLINK} --strip 1
+RUN ls /opt/segger_jlink_v692
+RUN rm ${FOLDER_JLINK}/JLinkConfigExe
+RUN rm ${FOLDER_JLINK}/JLinkGDBServerExe
+RUN rm ${FOLDER_JLINK}/JLinkGUIServerExe
+RUN rm ${FOLDER_JLINK}/JLinkRemoteServer
+RUN rm ${FOLDER_JLINK}/JLinkRemoteServerCLExe
+RUN rm ${FOLDER_JLINK}/JLinkRemoteServerExe
+RUN rm ${FOLDER_JLINK}/JLinkRTTViewerExe
+RUN rm ${FOLDER_JLINK}/JLinkSWOViewerExe
+RUN rm ${FOLDER_JLINK}/JLinkRegistration
+RUN rm ${FOLDER_JLINK}/JLinkRegistrationExe
+RUN rm ${FOLDER_JLINK}/JLinkLicenseManager
+RUN rm ${FOLDER_JLINK}/JLinkLicenseManagerExe
+RUN rm -rf ${FOLDER_JLINK}/Samples
+ENV PATH="${FOLDER_JLINK}:${PATH}"
+#
+# Create a non-root user to use if preferred - see https://aka.ms/vscode-remote/containers/non-root-user.
+RUN groupadd --gid $USER_GID $USERNAME \
+    && useradd -s /bin/bash --uid $USER_UID --gid $USER_GID -m $USERNAME
+#
+# Add sudo support for the non-root user
+RUN apt-get install --no-install-recommends -y sudo \
+    && echo $USERNAME ALL=\(root\) NOPASSWD:ALL > /etc/sudoers.d/$USERNAME\
+    && chmod 0440 /etc/sudoers.d/$USERNAME
+# Clean up
+RUN apt-get autoremove -y \
+    && apt-get clean -y \
+    && rm -rf /var/lib/apt/lists/*
+#Switch back to dialog
+ENV DEBIAN_FRONTEND=dialog
+
 #################### SSH-Server Image ####################
-##### User: ssh
+##### User: dev
 ##### Password: pwd
 ##########################################################
-FROM build-system AS ssh-server
+FROM dev AS ssh-server
 
 ENV DEBIAN_FRONTEND=dialog
 
@@ -50,12 +111,10 @@ RUN apt-get update && apt-get install --no-install-recommends -y \
     openssh-server \
     rsync
 
-RUN useradd -rm -d /home/ubuntu -s /bin/bash -g root -G sudo -u 1000 user 
-
-RUN  echo 'user:pwd' | chpasswd
+RUN  echo 'dev:pwd' | chpasswd
 
 RUN service ssh start
 
 EXPOSE 22
 
-CMD ["/usr/sbin/sshd","-D"]
+CMD ["/usr/sbin/sshd", "-D"]
