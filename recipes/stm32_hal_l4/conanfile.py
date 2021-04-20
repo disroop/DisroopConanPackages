@@ -78,30 +78,30 @@ class Stm32HalL4(ConanFile):
                }
 
     default_options = {
-        "hal_module_enabled": False,
+        "hal_module_enabled": True,
         "hal_adc_module_enabled": False,
         "hal_can_module_enabled": False,
         "hal_can_legacy_module_enabled": False,
         "hal_comp_module_enabled": False,
-        "hal_cortex_module_enabled": False,
+        "hal_cortex_module_enabled": True,
         "hal_crc_module_enabled": False,
         "hal_cryp_module_enabled": False,
         "hal_dac_module_enabled": False,
         "hal_dfsdm_module_enabled": False,
         "hal_dma_module_enabled": False,
-        "hal_flash_module_enabled": False,
+        "hal_flash_module_enabled": True,
         "hal_nand_module_enabled": False,
         "hal_nor_module_enabled": False,
         "hal_sram_module_enabled": False,
-        "hal_gpio_module_enabled": False,
+        "hal_gpio_module_enabled": True,
         "hal_i2c_module_enabled": False,
         "hal_iwdg_module_enabled": False,
         "hal_lcd_module_enabled": False,
         "hal_lptim_module_enabled": False,
         "hal_opamp_module_enabled": False,
-        "hal_pwr_module_enabled": False,
+        "hal_pwr_module_enabled": True,
         "hal_qspi_module_enabled": False,
-        "hal_rcc_module_enabled": False,
+        "hal_rcc_module_enabled": True,
         "hal_rng_module_enabled": False,
         "hal_rtc_module_enabled": False,
         "hal_sai_module_enabled": False,
@@ -138,7 +138,7 @@ class Stm32HalL4(ConanFile):
     }
 
     def requirements(self):
-        self.requires("cmake_vars/1.0.0@disroop/release")
+        self.requires(f"cmake_vars/1.0.0@{project_username}/{project_channel}")
         self.requires(
             f"stm32_cmsis_core/5.6.0_cm4@{project_username}/{project_channel}")
         self.requires(
