@@ -40,3 +40,4 @@ class GccArmNoneEabi(ConanFile):
         self.env_info.SIZE =  os.path.join(bin_folder, "arm-none-eabi-size")
         self.env_info.CPPFILT =  os.path.join(bin_folder, "arm-none-eabi-c++filt")
         self.env_info.SYSROOT = self.package_folder
+        self.env_info.CMAKE_TRY_COMPILE_TARGET_TYPE = "STATIC_LIBRARY"
