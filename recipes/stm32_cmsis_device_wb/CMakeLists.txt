@@ -24,7 +24,7 @@ if(${CMAKE_SYSTEM_NAME} STREQUAL "Generic")
     
     set(SOURCES 
             ${STARTUP_FILE}
-            ${CORE_DEVICE_DIR}/Source/Templates/systedm_stm32wbxx.c)
+            ${CORE_DEVICE_DIR}/Source/Templates/system_stm32wbxx.c)
     
     add_library(${LIBRARY_NAME} STATIC ${SOURCES})
     target_include_directories(${LIBRARY_NAME} PUBLIC ${CORE_DEVICE_DIR}/Include)
