@@ -6,7 +6,10 @@ on:
   push:
     branches: [ master ]
     paths: 
-      - '**/docker/*'
+      - '**/recipes/*'
+      - '**/build.sh'
+      - '**/container-build.py'
+      - '**/.profiles/**'
   pull_request:
     branches: [ master ]
     paths: 
@@ -18,7 +21,7 @@ on:
   workflow_dispatch:
   
 jobs:
-  docker-build:
+  packages-build:
     env:
       working-directory: "./docker"
     runs-on: ubuntu-latest
