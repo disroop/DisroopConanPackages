@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.16)
-
+include(${CMAKE_CURRENT_BINARY_DIR}/cmake_vars.cmake)
 include(${CMAKE_CURRENT_BINARY_DIR}/conanbuildinfo.cmake)
 
 project(STM_CMSIS_DEVICE_WB C ASM)
