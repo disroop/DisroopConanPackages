@@ -26,7 +26,8 @@ def run_build(docker_image, container_command):
 
 if __name__ == "__main__":
     args = get_args()
-    command ="/bin/bash -c 'setup; ./build.sh'"
+    bash_command = "setup; ./build.sh"
     if args.upload:
-        command += f"; mumoco --username={args.username} --password={args.password} --upload=disroop-conan"
+        bash_command += f"; mumoco --username={args.username} --password={args.password} --upload=disroop-conan"
+    command =f"/bin/bash -c '{bash_command}'"
     run_build("disroop/embedded-hipster:0.4.0",command)
