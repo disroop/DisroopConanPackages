@@ -187,6 +187,6 @@
  #include "stm32l4xx_hal_hcd.h"
 #endif /* HAL_HCD_MODULE_ENABLED */
 
-
+#endif /* __STM32L4xx_HAL_CONF_H */
 
 /************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/
