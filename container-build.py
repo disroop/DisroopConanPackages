@@ -1,8 +1,6 @@
 #!/usr/bin/python
 import os
 import docker
-from conans.client.conan_api import Conan
-from collections import namedtuple
 import argparse
 
 def get_args():
