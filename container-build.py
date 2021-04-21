@@ -20,16 +20,16 @@ def run_build(docker_image, container_command):
     try:
         retVal=client.containers.run(image=docker_image, command=container_command,remove=True, working_dir="/app", volumes={current_path: {'bind': '/app', 'mode': 'rw'}})
         retVal=retVal.decode('utf-8')
+        eprint(f'{retVal}')
+        eprint.ok("SUCCESS")
     except docker.errors.ContainerError as exc:
         exc = exc.stderr.decode('utf-8')
         eprint.error(f'Failed to run container:')
         eprint(exc)
-        exit(1)
-    eprint(f'{retVal}')
-    eprint.ok("SUCCESS")
-
 
 if __name__ == "__main__":
     args = get_args()
     command ="/bin/bash -c 'setup; ./build.sh'"
+    if args.upload:
+        command += f"; mumoco --username={args.username} --password={args.password} --upload=disroop-conan"
     run_build("disroop/embedded-hipster:0.4.0",command)

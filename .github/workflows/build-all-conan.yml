@@ -22,8 +22,6 @@ on:
   
 jobs:
   packages-build:
-    env:
-      working-directory: "./docker"
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2    
@@ -34,6 +32,5 @@ jobs:
           pip install docker 
 
       - name: build 
-        working-directory: ${{env.working-directory}}
-        run: python3 ./build.py   
-        
+        run: python3 ./container-build.py --username=${{ secrets.DISROOP_CONAN_USERNAME }} --password=${{ secrets.DISROOP_CONAN_TOKEN }} --upload
+      
