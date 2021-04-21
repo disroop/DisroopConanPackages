@@ -1,7 +1,6 @@
 #!/usr/bin/python
 import os
 import docker
-from eprint import eprint
 from conans.client.conan_api import Conan
 from collections import namedtuple
 import argparse
@@ -20,12 +19,12 @@ def run_build(docker_image, container_command):
     try:
         retVal=client.containers.run(image=docker_image, command=container_command,remove=True, working_dir="/app", volumes={current_path: {'bind': '/app', 'mode': 'rw'}})
         retVal=retVal.decode('utf-8')
-        eprint(f'{retVal}')
-        eprint.ok("SUCCESS")
+        print(f'{retVal}')
+        print("SUCCESS")
     except docker.errors.ContainerError as exc:
         exc = exc.stderr.decode('utf-8')
-        eprint.error(f'Failed to run container:')
-        eprint(exc)
+        print(f'Failed to run container:')
+        print(exc)
 
 if __name__ == "__main__":
     args = get_args()
