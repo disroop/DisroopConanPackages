@@ -30,17 +30,10 @@ class Stm32CmsisDeviceL4(ConanFile):
         git.clone("https://github.com/STMicroelectronics/cmsis_device_l4.git", branch=f"v{device_version}", shallow=True)
 
     def package(self):
-        self.copy("stm32l4xx.h", src="Include", dst="include", keep_path=False)
-        self.copy("stm32l476xx.h", src="Include", dst="include", keep_path=False)
-        self.copy("system_stm32l4xx.h", src="Include", dst="include", keep_path=False)
-        self.copy("*.a",  src="lib", dst="lib", keep_path=False)
-
-    def package_info(self):
-        if self.settings.arch == "x86_64":
-            self.cpp_info.libs.append(f"{self.name}")
-        self.cpp_info.defines.append("STM32L476xx")
+        self.copy("*.h", src="Include", dst="include", keep_path=False)
 
     def build(self):
-        cmake = CMake(self)
-        cmake.configure()
-        cmake.build()
+        pass
+    
+    def package_id(self):
+        self.info.header_only()
