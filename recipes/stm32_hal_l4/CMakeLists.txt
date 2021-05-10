@@ -274,6 +274,6 @@ endif()
 
 if(${CMAKE_SYSTEM_NAME} STREQUAL "Generic")
     add_library(${LIBRARY_NAME} STATIC ${SOURCES})
-    target_include_directories(${LIBRARY_NAME} PUBLIC ${CMAKE_CURRENT_LIST_DIR}/include ${STM_HAL_DIR}/Inc ${CONAN_INCLUDE_DIRS})
+    target_include_directories(${LIBRARY_NAME} PUBLIC ${CMAKE_CURRENT_LIST_DIR}/include ${STM_HAL_DIR}/Inc PRIVATE ${CONAN_INCLUDE_DIR_STM32_CMSIS_CORE} ${CONAN_INCLUDE_DIR_STM32_DEVICE_L4})
     target_compile_definitions(${LIBRARY_NAME} PUBLIC ${DEFINES} ${CONAN_DEFINES})
 endif()

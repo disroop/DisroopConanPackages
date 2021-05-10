@@ -138,7 +138,7 @@ class Stm32HalL4(ConanFile):
     }
 
     def requirements(self):
-        self.requires(f"cmake_vars/1.0.0@{project_username}/{project_channel}")
+        self.requires(f"cmake_vars/1.0.0@{project_username}/{project_channel}",private=True)
         self.requires(
             f"stm32_cmsis_core/5.6.0_cm4@{project_username}/{project_channel}")
         self.requires(
@@ -160,28 +160,29 @@ class Stm32HalL4(ConanFile):
 
     def package_info(self):
         self.cpp_info.libs.append(f"{self.name}")
+        self.cpp_info.defines=["HELLO"]
         for option, optionstr in self.options.items():
-            if optionstr.endswith("_enabled") and self.options.get_safe(optionstr) == True:
-                self.cpp_info.defines.append(optionstr.upper())
+            if option.endswith("_enabled") and optionstr == "True":
+                self.cpp_info.defines.append(f"{option.upper()}")
             if optionstr == "use_full_assert":
                 self.cpp_info.defines.append("USE_FULL_ASSERT")
             if optionstr.endswith("_enable"):
-                if self.options.get_safe(optionstr) == True:
+                if optionstr == "True":
                     self.cpp_info.defines.append(f"{optionstr.upper()}=1")
                 else:
                     self.cpp_info.defines.append(f"{optionstr.upper()}=0")
             if optionstr == "use_rtos":
-                if self.options.get_safe(optionstr) == True:
+                if optionstr == "True":
                     self.cpp_info.defines.append(f"USE_RTOS=1")
                 else:
                     self.cpp_info.defines.append(f"USE_RTOS=0")
             if optionstr == "use_spi_crc":
-                if self.options.get_safe(optionstr) == True:
+                if optionstr == "True":
                     self.cpp_info.defines.append(f"USE_SPI_CRC=1")
                 else:
                     self.cpp_info.defines.append(f"USE_SPI_CRC=0")
             if optionstr.endswith("_value"):
-                self.cpp_info.defines.append(f"{optionstr.upper()}={self.options.get_safe(optionstr)}")
+                self.cpp_info.defines.append(f"{optionstr.upper()}={optionstr}")
 
     def build(self):
         cmake = CMake(self)

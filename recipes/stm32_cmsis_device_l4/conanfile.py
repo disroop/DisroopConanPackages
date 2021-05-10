@@ -22,7 +22,7 @@ class Stm32CmsisDeviceL4(ConanFile):
 
     def requirements(self):
         self.requires(f"stm32_cmsis_core/5.6.0_cm4@{project_username}/{project_channel}")
-        self.requires(f"cmake_vars/1.0.0@{project_username}/{project_channel}")
+        self.requires(f"cmake_vars/1.0.0@{project_username}/{project_channel}",private=True)
 
 
     def source(self):
