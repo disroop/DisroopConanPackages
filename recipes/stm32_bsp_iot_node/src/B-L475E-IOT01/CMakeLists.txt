@@ -23,3 +23,5 @@ add_library(${LIBRARY_NAME} STATIC ${SOURCES}
     $<TARGET_OBJECTS:stm32bspiotnodelis3mdl>
     $<TARGET_OBJECTS:stm32bspiotnodelps22hb>
     $<TARGET_OBJECTS:stm32bspiotnodelsm6dsl>)
+
+target_link_libraries(${LIBRARY_NAME} PRIVATE stm32_hal_l4::stm32_hal_l4)
