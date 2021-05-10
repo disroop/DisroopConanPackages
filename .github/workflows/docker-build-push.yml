@@ -12,6 +12,7 @@ on:
     paths: 
       - '**/docker/*'
   create:
+    branches: [ master ]
     tags: [docker-v*.*.*]
 
   workflow_dispatch:
