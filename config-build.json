@@ -13,14 +13,14 @@
             "buildprofile": "default",
             "buildsettings": ["build_type=Release"],
             "build": "missing",
-            "excludes": ["cmake_vars","gcc_arm_none_eabi","stm32_bsp_Iot_node"]
+            "excludes": ["cmake_vars","gcc_arm_none_eabi"]
         },
         {
             "hostprofile": ".profiles/arm-m4-release",
             "buildprofile": "default",
             "buildsettings": ["build_type=Release"],
             "build": "missing",
-            "excludes": ["cmake_vars","gcc_arm_none_eabi","stm32_bsp_Iot_node"]
+            "excludes": ["cmake_vars","gcc_arm_none_eabi"]
         }
     ],
     "remotes": [
