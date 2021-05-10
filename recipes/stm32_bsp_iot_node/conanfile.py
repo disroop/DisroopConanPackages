@@ -3,6 +3,7 @@ import os
 from conans import ConanFile, CMake, tools
 from conan.tools.cmake import CMake, CMakeDeps
 
+project_version = os.getenv("PROJECT_VERSION", "snapshot")
 project_username = os.getenv("CONAN_USERNAME", "disroop")
 project_channel = os.getenv("CONAN_CHANNEL", "development")
 
@@ -17,11 +18,25 @@ class Stm32BspIotNode(ConanFile):
     exports_sources = "CMakeLists.txt", "src/*",
     
     def configure(self):
-        self.options["stm32_hal_l4"].hal_spi_module_enabled=True
+        self.options["stm32_hal_l4"].device="STM32L475xx"
+        self.options["stm32_hal_l4"].hal_module_enabled=True
+        self.options["stm32_hal_l4"].hal_cortex_module_enabled=True
+        self.options["stm32_hal_l4"].hal_dfsdm_module_enabled=True
+        #self.options["stm32_hal_l4"].hal_spi_module_enabled=True
         self.options["stm32_hal_l4"].hal_dma_module_enabled=True
+        self.options["stm32_hal_l4"].hal_flash_module_enabled=True
+        self.options["stm32_hal_l4"].hal_gpio_module_enabled=True
+        self.options["stm32_hal_l4"].hal_i2c_module_enabled=True
+        self.options["stm32_hal_l4"].hal_pwr_module_enabled=True
+        self.options["stm32_hal_l4"].hal_qspi_module_enabled=True
+        self.options["stm32_hal_l4"].hal_rcc_module_enabled=True
+        self.options["stm32_hal_l4"].hal_uart_module_enabled=True
+
     
     def requirements(self):
         self.requires(f"stm32_hal_l4/1.13.0@{project_username}/{project_channel}")
+        self.requires(f"stm32_runtime_l475/{project_version}@{project_username}/{project_channel}")
+
 
     def package(self):
         self.copy("*.h", src = f"{self.source_folder}/hal_driver/Inc",

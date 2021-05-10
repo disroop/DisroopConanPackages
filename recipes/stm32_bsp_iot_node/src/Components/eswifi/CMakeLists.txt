@@ -2,12 +2,8 @@ set(LIBRARY_NAME stm32bspiotnodeeswifi)
 
 set(SOURCES
 ${CMAKE_CURRENT_LIST_DIR}/es_wifi_conf.h
-${CMAKE_CURRENT_LIST_DIR}/es_wifi_io.c
-${CMAKE_CURRENT_LIST_DIR}/es_wifi_io.h
 ${CMAKE_CURRENT_LIST_DIR}/es_wifi.c
-${CMAKE_CURRENT_LIST_DIR}/es_wifi.h
-${CMAKE_CURRENT_LIST_DIR}/wifi.c
-${CMAKE_CURRENT_LIST_DIR}/wifi.h)
+${CMAKE_CURRENT_LIST_DIR}/es_wifi.h)
 
 add_library(${LIBRARY_NAME} OBJECT ${SOURCES})
 target_include_directories(${LIBRARY_NAME} PUBLIC ${CMAKE_CURRENT_LIST_DIR})
