@@ -18,7 +18,8 @@ class Stm32HalL4(ConanFile):
     generators = "cmake", "cmake_vars",
     settings = "os", "compiler", "build_type", "arch"
     exports_sources = "CMakeLists.txt", "include/*.h",
-    options = {"hal_module_enabled": [True, False],
+    options = {"device": ["STM32L476xx","STM32L475xx"],
+               "hal_module_enabled": [True, False],
                "hal_adc_module_enabled": [True, False],
                "hal_can_module_enabled": [True, False],
                "hal_can_legacy_module_enabled": [True, False],
@@ -78,6 +79,7 @@ class Stm32HalL4(ConanFile):
                }
 
     default_options = {
+        "device": "STM32L476xx",
         "hal_module_enabled": True,
         "hal_adc_module_enabled": False,
         "hal_can_module_enabled": False,
@@ -160,29 +162,30 @@ class Stm32HalL4(ConanFile):
 
     def package_info(self):
         self.cpp_info.libs.append(f"{self.name}")
-        self.cpp_info.defines=["HELLO"]
         for option, optionstr in self.options.items():
             if option.endswith("_enabled") and optionstr == "True":
                 self.cpp_info.defines.append(f"{option.upper()}")
-            if optionstr == "use_full_assert":
+            if option == "use_full_assert":
                 self.cpp_info.defines.append("USE_FULL_ASSERT")
-            if optionstr.endswith("_enable"):
+            if option.endswith("_enable"):
                 if optionstr == "True":
                     self.cpp_info.defines.append(f"{optionstr.upper()}=1")
                 else:
                     self.cpp_info.defines.append(f"{optionstr.upper()}=0")
-            if optionstr == "use_rtos":
+            if option == "use_rtos":
                 if optionstr == "True":
                     self.cpp_info.defines.append(f"USE_RTOS=1")
                 else:
                     self.cpp_info.defines.append(f"USE_RTOS=0")
-            if optionstr == "use_spi_crc":
+            if option == "use_spi_crc":
                 if optionstr == "True":
                     self.cpp_info.defines.append(f"USE_SPI_CRC=1")
                 else:
                     self.cpp_info.defines.append(f"USE_SPI_CRC=0")
-            if optionstr.endswith("_value"):
+            if option.endswith("_value"):
                 self.cpp_info.defines.append(f"{optionstr.upper()}={optionstr}")
+            if option == "device":
+                self.cpp_info.defines.append(f"{optionstr}")
 
     def build(self):
         cmake = CMake(self)
