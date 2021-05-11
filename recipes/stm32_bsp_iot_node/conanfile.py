@@ -39,13 +39,15 @@ class Stm32BspIotNode(ConanFile):
 
 
     def package(self):
-        self.copy("*.h", src = f"{self.source_folder}/hal_driver/Inc",
-                  dst = "include", excludes = "*template.h", keep_path = False)
-        self.copy("*.h", src = f"{self.source_folder}/hal_driver/Inc/Legacy",
-                  dst = "include/Legacy", excludes = "*template.h", keep_path = False)
-        self.copy("*.h", src = f"{self.source_folder}/include",
-                  dst = "include", excludes = "*template.h", keep_path = False)
+        self.copy("*.h", src = f"{self.source_folder}/B-L475E-IOT01",
+                  dst = "include", keep_path = False)
+        self.copy("*.h", src = f"{self.source_folder}/Components/",
+                  dst = "include", keep_path = False)
         self.copy("*.a",  src = "lib", dst = "lib", keep_path = False)
+
+    def package_info(self):
+        self.cpp_info.libs.append("stm32bspiotnode")
+
 
     def build(self):
         cmake = CMake(self)
