@@ -17,8 +17,8 @@ RUN apt-get update && apt-get install --no-install-recommends -y \
 RUN ln -s /usr/bin/python3 /usr/bin/python \
     && ln -s /usr/bin/pip3 /usr/bin/pip
 
-RUN pip3 install conan==1.35.0
-RUN pip3 install mumoco==0.2.0
+RUN pip3 install conan==1.36.0
+RUN pip3 install mumoco==0.2.1
 #TODO: This is only temporary
 RUN pip3 install eprint
 
