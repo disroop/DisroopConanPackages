@@ -1,4 +1,4 @@
-name: build all packages
+name: build all packages and push
 
 # Controls when the action will run. 
 on:
@@ -6,14 +6,14 @@ on:
   push:
     branches: [ master ]
     paths: 
-      - '**/recipes/*'
+      - '**/recipes/**'
       - '**/build.sh'
       - '**/container-build.py'
       - '**/.profiles/**'
   pull_request:
     branches: [ master ]
     paths: 
-      - '**/recipes/*'
+      - '**/recipes/**'
       - '**/build.sh'
       - '**/container-build.py'
       - '**/.profiles/**'
