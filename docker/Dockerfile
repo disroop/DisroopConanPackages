@@ -6,7 +6,7 @@ ENV DEBIAN_FRONTEND=noninteractive
 RUN apt-get update && apt-get install --no-install-recommends -y \
     apt-utils \
     python3=3.8.2-0ubuntu2 \
-    python3-pip=20.0.2-5ubuntu1.1 \
+    python3-pip=20.0.2-5ubuntu1.4 \
     git=1:2.25.1-1ubuntu3 \
     clang=1:10.0-50~exp1 \
     ninja-build=1.10.0-1build1 \
@@ -15,6 +15,7 @@ RUN apt-get update && apt-get install --no-install-recommends -y \
 
 #Remove python 2.7 us pyhton3 as default
 RUN ln -s /usr/bin/python3 /usr/bin/python \
+    && rm -rf /usr/bin/pip \
     && ln -s /usr/bin/pip3 /usr/bin/pip
 
 RUN pip3 install conan==1.36.0
