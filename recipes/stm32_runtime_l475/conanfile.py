@@ -11,7 +11,7 @@ project_channel = os.getenv("CONAN_CHANNEL", "development")
 class Stm32Runtimel475(ConanFile):
     name = "stm32_runtime_l475"
     url = "todo add url"
-    version = f"{project_version}"
+    version = "0.1.0"
     channel = f"{project_channel}"
     user = f"{project_username}"
     license = "MIT"
