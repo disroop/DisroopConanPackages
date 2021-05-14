@@ -1,0 +1,34 @@
+from conans import ConanFile
+from conans import tools
+from conan.tools.cmake import CMake, CMakeDeps
+import os
+
+
+project_version = os.getenv("PROJECT_VERSION")
+project_username = os.getenv("CONAN_USERNAME")
+project_channel = os.getenv("CONAN_CHANNEL")
+
+class Stm32BspIotNodeTest(ConanFile):
+    name = "test_cmake_vars"
+    version = f"{project_version}"
+    license = "closed"
+    url = "TODO"
+    default_channel = f"{project_channel}"
+    default_user = f"{project_username}"
+    settings = "os", "compiler", "build_type", "arch"
+    generators = "CMakeDeps","CMakeToolchain","cmake_vars"
+    exports_sources = "src/*", "CMakeLists.txt"
+    
+    def requirements(self):
+        self.requires(f"cmake_vars/1.0.0@{project_username}/{project_channel}",private=True)
+
+    def build(self):
+        cmake = CMake(self)
+        cmake.configure()
+        cmake.build()
+        
+    def test(self):
+        if tools.cross_building(self.settings):
+            bin_path = os.path.join("src", "test")
+            if not os.path.isfile(bin_path):
+                raise FileNotFoundError(bin_path)

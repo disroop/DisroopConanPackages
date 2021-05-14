@@ -1,3 +1,5 @@
+set(LIBRARY_NAME "stm32_runtime_l476")
+
 if (CMAKE_C_COMPILER_ID STREQUAL "GNU")
     set(STARTUP_FILE ${CMAKE_CURRENT_LIST_DIR}/gcc/startup_stm32l476xx.s)
     

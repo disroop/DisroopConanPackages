@@ -25,11 +25,12 @@ class Stm32Runtimel475(ConanFile):
         self.requires(f"cmake_vars/1.0.0@{project_username}/{project_channel}",private=True)
 
     def package(self):
-        self.copy("*.a",  src="lib", dst="lib", keep_path=False)
+        self.copy("*.a",  src="src", dst="lib", keep_path=False)
 
     def package_info(self):
-        self.cpp_info.libs.append(f"{self.name}")
+        self.cpp_info.libs.append(f"stm32_runtime_l475")
         self.cpp_info.defines.append("STM32L475xx")
+        self.cpp_info.includedirs=[""]
 
     def build(self):
         cmake = CMake(self)
