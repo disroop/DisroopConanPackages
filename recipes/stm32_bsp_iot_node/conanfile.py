@@ -16,7 +16,9 @@ class Stm32BspIotNode(ConanFile):
     generators =  "CMakeDeps","CMakeToolchain","cmake_vars"
     settings = "os", "compiler", "build_type", "arch"
     exports_sources = "CMakeLists.txt", "src/*",
-    
+    options = {"irq_spi_interface_prio":"ANY"}
+    default_options = {"irq_spi_interface_prio":"0"}
+
     def configure(self):
         self.options["stm32_hal_l4"].device="STM32L475xx"
         self.options["stm32_hal_l4"].hal_module_enabled=True
@@ -50,6 +52,7 @@ class Stm32BspIotNode(ConanFile):
 
     def package_info(self):
         self.cpp_info.libs.append("stm32bspiotnode")
+        self.cpp_info.defines=[f"SPI_INTERFACE_PRIO={self.options.irq_spi_interface_prio}"]
 
 
     def build(self):

@@ -28,7 +28,10 @@ class Stm32Runtimel476(ConanFile):
         self.copy("*.a",  src="lib", dst="lib", keep_path=False)
 
     def package_info(self):
-        self.cpp_info.libs.append(f"stm32_runtime_l475")
+        self.cpp_info.libs.append(f"stm32_runtime_l476")
+        self.cpp_info.defines.append("STM32L476xx")
+        self.cpp_info.includedirs=[""]
+
 
     def build(self):
         cmake = CMake(self)

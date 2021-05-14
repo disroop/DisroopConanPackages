@@ -17,3 +17,4 @@ set(SOURCES
 add_library(${LIBRARY_NAME} STATIC ${SOURCES})
 target_include_directories(${LIBRARY_NAME} PUBLIC ${CORE_DEVICE_DIR}/Include)
 target_link_libraries(${LIBRARY_NAME} PRIVATE stm32_cmsis_device_l4::stm32_cmsis_device_l4)
+target_compile_definitions(${LIBRARY_NAME} PRIVATE "STM32L476xx")
