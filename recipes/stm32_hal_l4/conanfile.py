@@ -183,7 +183,7 @@ class Stm32HalL4(ConanFile):
                 else:
                     self.cpp_info.defines.append(f"USE_SPI_CRC=0")
             if option.endswith("_value"):
-                self.cpp_info.defines.append(f"{optionstr.upper()}={optionstr}")
+                self.cpp_info.defines.append(f"{option.upper()}={optionstr}")
             if option == "device":
                 self.cpp_info.defines.append(f"{optionstr}")
 

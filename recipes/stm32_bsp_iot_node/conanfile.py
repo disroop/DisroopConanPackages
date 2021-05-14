@@ -8,7 +8,7 @@ project_username = os.getenv("CONAN_USERNAME", "disroop")
 project_channel = os.getenv("CONAN_CHANNEL", "development")
 
 class Stm32BspIotNode(ConanFile):
-    name = "stm32_bsp_Iot_node"
+    name = "stm32_bsp_iot_node"
     url = "todo add url"
     version = "1.1.7"
     license = "MIT"
@@ -22,7 +22,7 @@ class Stm32BspIotNode(ConanFile):
         self.options["stm32_hal_l4"].hal_module_enabled=True
         self.options["stm32_hal_l4"].hal_cortex_module_enabled=True
         self.options["stm32_hal_l4"].hal_dfsdm_module_enabled=True
-        #self.options["stm32_hal_l4"].hal_spi_module_enabled=True
+        self.options["stm32_hal_l4"].hal_spi_module_enabled=True
         self.options["stm32_hal_l4"].hal_dma_module_enabled=True
         self.options["stm32_hal_l4"].hal_flash_module_enabled=True
         self.options["stm32_hal_l4"].hal_gpio_module_enabled=True
@@ -36,14 +36,17 @@ class Stm32BspIotNode(ConanFile):
     def requirements(self):
         self.requires(f"stm32_hal_l4/1.13.0@{project_username}/{project_channel}")
         self.requires(f"stm32_runtime_l475/{project_version}@{project_username}/{project_channel}")
+        self.requires(f"cmake_vars/1.0.0@{project_username}/{project_channel}",private=True)
 
 
     def package(self):
-        self.copy("*.h", src = f"{self.source_folder}/B-L475E-IOT01",
+        self.copy("*.h", src=f"src/B-L475E-IOT01",
                   dst = "include", keep_path = False)
-        self.copy("*.h", src = f"{self.source_folder}/Components/",
-                  dst = "include", keep_path = False)
-        self.copy("*.a",  src = "lib", dst = "lib", keep_path = False)
+        modules = ["eswifi", "hts221", "lis3mdl", "lis3mdl","lps22hb","lsm6dsl","mx25r6435f"]
+        for mod in modules:
+            self.copy("*.h", src = f"src/Components/{mod}",
+                  dst = f"include/Components/{mod}", keep_path = False)
+        self.copy("*.a",  src = "src/B-L475E-IOT01", dst = "lib", keep_path = False)
 
     def package_info(self):
         self.cpp_info.libs.append("stm32bspiotnode")

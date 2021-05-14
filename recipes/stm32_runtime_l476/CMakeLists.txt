@@ -11,6 +11,5 @@ find_package(stm32_cmsis_device_l4 REQUIRED)
 set(LIBRARY_NAME ${CONAN_PACKAGE_NAME})
 set(CORE_DEVICE_DIR ${CMAKE_CURRENT_BINARY_DIR})
 
-if(${CMAKE_SYSTEM_NAME} STREQUAL "Generic")
-    add_subdirectory(src)
-endif()
+
+add_subdirectory(src)
