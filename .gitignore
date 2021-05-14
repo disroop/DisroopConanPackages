@@ -1,9 +1,9 @@
 #conan
 to ignore  to folder by running conan source . -sf source
 source/
-test_package
 .idea
 tmp/
+build/
 
 #Python
 __pycache__
