@@ -56,6 +56,7 @@ RUN apt-get update && apt-get install --no-install-recommends -y \
     vim=2:8.1.2269-1ubuntu5 \
     sudo=1.8.31-1ubuntu1.2\
     libncurses5 \
+    ssh=1:8.2p1-4 \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/* 
 
