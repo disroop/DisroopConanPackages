@@ -33,12 +33,14 @@ class Stm32BspIotNode(ConanFile):
         self.options["stm32_hal_l4"].hal_qspi_module_enabled=True
         self.options["stm32_hal_l4"].hal_rcc_module_enabled=True
         self.options["stm32_hal_l4"].hal_uart_module_enabled=True
-
+        self.options["stm32_hal_l4"].hal_rng_module_enabled=True
+        self.options["stm32_hal_l4"].hal_rtc_module_enabled=True
+        self.options["stm32_hal_l4"].hal_tim_module_enabled=True
     
     def requirements(self):
         self.requires(f"stm32_hal_l4/1.13.0@{project_username}/{project_channel}")
         self.requires(f"stm32_runtime_l475/0.1.0@{project_username}/{project_channel}")
-        self.requires(f"cmake_vars/1.0.0@{project_username}/{project_channel}",private=True)
+        self.requires(f"cmake_vars/1.0.0@disroop/development",private=True)
 
 
     def package(self):
