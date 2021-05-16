@@ -4,10 +4,9 @@ from conan.tools.cmake import CMake, CMakeDeps
 import os
 
 
-project_version = os.getenv("PROJECT_VERSION")
-project_username = os.getenv("CONAN_USERNAME")
-project_channel = os.getenv("CONAN_CHANNEL")
-
+project_version = os.getenv("PROJECT_VERSION", "snapshot")
+project_username = os.getenv("CONAN_USERNAME", "disroop")
+project_channel = os.getenv("CONAN_CHANNEL", "development")
 class Stm32BspIotNodeTest(ConanFile):
     name = "test_cmake_vars"
     version = f"{project_version}"
