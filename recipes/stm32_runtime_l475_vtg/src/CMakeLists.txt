@@ -1,9 +1,6 @@
-set(LIBRARY_NAME "stm32_runtime_l475")
+set(LIBRARY_NAME "stm32_runtime_l475_vtg")
 if (CMAKE_C_COMPILER_ID STREQUAL "GNU")
-    set(STARTUP_FILE ${CMAKE_CURRENT_LIST_DIR}/gcc/startup_stm32l475xx.s)
-    
-elseif (CMAKE_C_COMPILER_ID STREQUAL "IAR")
-    set(STARTUP_FILE ${CMAKE_CURRENT_LIST_DIR}/iar/startup_stm32l475xx.s)
+    set(STARTUP_FILE ${CMAKE_CURRENT_LIST_DIR}/startup_stm32l475xx.s)
 else()
     message(FATAL_ERROR "Unsupported Compiler")
 endif()
