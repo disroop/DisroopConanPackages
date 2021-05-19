@@ -25,6 +25,7 @@ class Stm32Runtimel475(ConanFile):
         self.requires(f"cmake_vars/1.0.0@{project_username}/{project_channel}",private=True)
 
     def package(self):
+        self.copy("*.ld",  src="src", dst="include", keep_path=False)
         self.copy("*.a",  src="src", dst="lib", keep_path=False)
         self.copy("FindPlatform.cmake",  src=".", dst=".", keep_path=False)
 
