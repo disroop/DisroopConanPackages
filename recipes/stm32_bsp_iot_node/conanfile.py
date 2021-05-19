@@ -39,7 +39,6 @@ class Stm32BspIotNode(ConanFile):
     
     def requirements(self):
         self.requires(f"stm32_hal_l4/1.13.0@{project_username}/{project_channel}")
-        self.requires(f"stm32_runtime_l475/0.1.0@{project_username}/{project_channel}")
         self.requires(f"cmake_vars/1.0.0@disroop/development",private=True)
 
 
