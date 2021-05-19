@@ -32,7 +32,6 @@ class Stm32Runtimel475(ConanFile):
     def package_info(self):
         self.cpp_info.libs.append(f"stm32_runtime_l475_vtg")
         self.cpp_info.defines.append("STM32L475xx")
-        self.cpp_info.includedirs=[""]
 
     def build(self):
         cmake = CMake(self)
