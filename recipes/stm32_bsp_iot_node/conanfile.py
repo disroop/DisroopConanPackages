@@ -43,12 +43,7 @@ class Stm32BspIotNode(ConanFile):
 
 
     def package(self):
-        self.copy("*.h", src=f"src/B-L475E-IOT01",
-                  dst = "include", keep_path = False)
-        modules = ["eswifi", "hts221", "lis3mdl", "lis3mdl","lps22hb","lsm6dsl","mx25r6435f"]
-        for mod in modules:
-            self.copy("*.h", src = f"src/Components/{mod}",
-                  dst = f"include/Components/{mod}", keep_path = False)
+        self.copy("*.h", src=f"src", dst = "include", keep_path = True)
         self.copy("*.a",  src = "src/B-L475E-IOT01", dst = "lib", keep_path = False)
 
     def package_info(self):
