@@ -1,0 +1,22 @@
+image::https://github.com/disroop/DisroopConanPackages/actions/workflows/build-all-conan.yml/badge.svg[] image::https://github.com/disroop/DisroopConanPackages/actions/workflows/docker-build-push.yml/badge.svg[]
+
+= DisroopConanPackages
+
+This repository contains multiple conan packages and Dockerfiles to develop new C/C++ projects. This repository continuously builds all changes and pushes the conan artifacts to disroop.jfrog.io and the docker images to dockerhub.
+
+[.underline]#You can find the conan packages here:#
+
+https://disroop.jfrog.io/ui/repos/tree/General/disroop-conan
+
+[.underline]#You can find the docker images here:#
+
+Base Image: 
+https://hub.docker.com/r/disroop/embedded-hipster
+
+Developer Image: 
+https://hub.docker.com/r/disroop/embedded-hipster-dev
+
+Developer Image with SSH-Server: https://hub.docker.com/r/disroop/embedded-hipster-ssh
+
+
+
