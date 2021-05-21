@@ -1,4 +1,6 @@
-image::https://github.com/disroop/DisroopConanPackages/actions/workflows/build-all-conan.yml/badge.svg[] image::https://github.com/disroop/DisroopConanPackages/actions/workflows/docker-build-push.yml/badge.svg[]
+image::https://github.com/disroop/DisroopConanPackages/actions/workflows/build--all-conan.yml/badge.svg[] 
+
+image::https://github.com/disroop/DisroopConanPackages/actions/workflows/docker-build-push.yml/badge.svg[]
 
 = DisroopConanPackages
 
