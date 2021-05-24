@@ -45,18 +45,27 @@ RUN  apt-get install --no-install-recommends -y cmake
 #################### sonar-scanner ####################
 FROM build-system AS sonar
 
-ARG SONAR_SCANNER_HOME=/opt/sonar-scanner
-ENV SONAR_SCANNER_HOME=${SONAR_SCANNER_HOME} \
-    PATH=${SONAR_SCANNER_HOME}/bin:${PATH} 
-
 RUN apt-get update && apt-get install --no-install-recommends -y \
     wget \ 
     unzip \
-    nodejs 
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/*
 
+# Sonar Build Wrapper
+ARG BUILD_WRAPPER_HOME=/opt/build-wrapper-linux-x86
+RUN wget -q -O /opt/build-wrapper-linux-x86.zip https://sonarcloud.io/static/cpp/build-wrapper-linux-x86.zip \
+    && unzip /opt/build-wrapper-linux-x86.zip -d /opt \
+    && rm /opt/build-wrapper-linux-x86.zip
+ENV BUILD_WRAPPER_HOME=${BUILD_WRAPPER_HOME} PATH=${BUILD_WRAPPER_HOME}:${PATH}
+RUN ln -s ${BUILD_WRAPPER_HOME}/build-wrapper-linux-x86-64 ${BUILD_WRAPPER_HOME}/build-wrapper
+
+# Sonar Scanner
 RUN wget -q -O /opt/sonar-scanner-cli.zip https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-4.6.2.2472-linux.zip \
-    && unzip /opt/sonar-scanner-cli.zip -d ${SONAR_SCANNER_HOME} \
-    && rm /opt/sonar-scanner-cli.zip 
+    && unzip /opt/sonar-scanner-cli.zip -d /opt \
+    && rm /opt/sonar-scanner-cli.zip
+
+ARG SONAR_SCANNER_HOME=/opt/sonar-scanner-4.6.2.2472-linux
+ENV SONAR_SCANNER_HOME=${SONAR_SCANNER_HOME} PATH=${SONAR_SCANNER_HOME}/bin:${PATH}
 
 #################### dev-environment ####################
 ##### User: dev
