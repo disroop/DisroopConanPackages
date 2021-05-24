@@ -32,4 +32,5 @@ if __name__ == '__main__':
     docker_build_push('build-system','embedded-hipster',dockerversion,pushImage)
     docker_build_push('dev','embedded-hipster-dev',dockerversion,pushImage)
     docker_build_push('ssh-server','embedded-hipster-ssh',dockerversion,pushImage)
+    docker_build_push('sonar','embedded-hipster-sonar',dockerversion,pushImage)
         

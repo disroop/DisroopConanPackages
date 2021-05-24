@@ -42,6 +42,22 @@ RUN apt-get install kitware-archive-keyring && rm /etc/apt/trusted.gpg.d/kitware
 
 RUN  apt-get install --no-install-recommends -y cmake
 
+#################### sonar-scanner ####################
+FROM build-system AS sonar
+
+ARG SONAR_SCANNER_HOME=/opt/sonar-scanner
+ENV SONAR_SCANNER_HOME=${SONAR_SCANNER_HOME} \
+    PATH=${SONAR_SCANNER_HOME}/bin:${PATH} 
+
+RUN apt-get update && apt-get install --no-install-recommends -y \
+    wget \ 
+    unzip \
+    nodejs 
+
+RUN wget -q -O /opt/sonar-scanner-cli.zip https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-4.6.2.2472-linux.zip \
+    && unzip /opt/sonar-scanner-cli.zip -d ${SONAR_SCANNER_HOME} \
+    && rm /opt/sonar-scanner-cli.zip 
+
 #################### dev-environment ####################
 ##### User: dev
 ##########################################################
