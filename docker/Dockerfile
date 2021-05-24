@@ -6,7 +6,7 @@ ENV DEBIAN_FRONTEND=noninteractive
 RUN apt-get update && apt-get install --no-install-recommends -y \
     apt-utils \
     python3=3.8.2-0ubuntu2 \
-    python3-pip=20.0.2-5ubuntu1.4 \
+    python3-pip \
     git=1:2.25.1-1ubuntu3 \
     clang=1:10.0-50~exp1 \
     ninja-build=1.10.0-1build1 \
