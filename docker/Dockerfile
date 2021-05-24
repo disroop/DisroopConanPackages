@@ -70,7 +70,7 @@ ENV SONAR_SCANNER_HOME=${SONAR_SCANNER_HOME} PATH=${SONAR_SCANNER_HOME}/bin:${PA
 #################### dev-environment ####################
 ##### User: dev
 ##########################################################
-FROM build-system AS dev
+FROM sonar AS dev
 ENV DEBIAN_FRONTEND=noninteractive
 ARG USERNAME=dev
 ARG USER_UID=1000
