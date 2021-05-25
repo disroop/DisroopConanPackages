@@ -6,7 +6,7 @@ class GccArmNoneEabi(ConanFile):
     version = "10.2.0"
     user = "disroop"
     channel = "release"
-    settings = None
+    settings = "os"
 
     # Implement source() and build() as usual
     def source(self):
