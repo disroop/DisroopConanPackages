@@ -9,7 +9,7 @@ RUN apt-get update && apt-get install --no-install-recommends -y \
     python3-pip \
     git=1:2.25.1-1ubuntu3 \
     clang=1:10.0-50~exp1 \
-    ninja-build=1.10.0-1build1 \
+    make=4.2.1-1.2 \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
@@ -22,10 +22,6 @@ RUN pip3 install conan==1.36.0
 RUN pip3 install mumoco==0.2.1
 #TODO: This is only temporary
 RUN pip3 install eprint
-
-ADD setup.sh /run/setup.sh
-RUN chmod +x /run/setup.sh \
-    && ln -s /run/setup.sh /usr/bin/setup
 
 #Install Cmake 3.19.2
 RUN apt-get update
