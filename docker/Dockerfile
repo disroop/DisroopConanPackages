@@ -23,6 +23,11 @@ RUN pip3 install mumoco==0.2.1
 #TODO: This is only temporary
 RUN pip3 install eprint
 
+# Add Setup Script
+ADD setup.sh /run/setup.sh
+RUN chmod +x /run/setup.sh \
+    && ln -s /run/setup.sh /usr/bin/setup
+
 #Install Cmake 3.19.2
 RUN apt-get update
 
