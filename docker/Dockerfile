@@ -14,6 +14,8 @@ RUN apt-get update && apt-get install --no-install-recommends -y \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
+RUN ln -s /usr/bin/llvm-cov-11 /usr/bin/llvm-cov
+
 #Remove python 2.7 us pyhton3 as default
 RUN ln -s /usr/bin/python3 /usr/bin/python \
     && rm -rf /usr/bin/pip \
