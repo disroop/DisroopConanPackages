@@ -9,7 +9,7 @@ RUN apt-get update && apt-get install --no-install-recommends -y \
     python3-pip \
     git=1:2.25.1-1ubuntu3 \
     clang=1:10.0-50~exp1 \
-    clang-tidiy=1:10.0-50~exp1 \
+    clang-tidy=1:10.0-50~exp1 \
     iwyu \
     make=4.2.1-1.2 \
     llvm-11=1:11.0.0-2~ubuntu20.04.1 \
@@ -152,3 +152,68 @@ RUN service ssh start
 EXPOSE 22
 
 CMD ["/usr/sbin/sshd", "-D"]
+
+################################################################################################################################################################
+# Clion Environment Image ######################################################################################################################################
+################################################################################################################################################################
+FROM dev AS clion
+USER root
+
+## Install OpenJDK-8
+RUN apt-get update && \
+    apt-get install --no-install-recommends -y \
+    openjdk-8-jdk && \
+    apt-get clean;
+
+# Fix certificate issues
+RUN apt-get update && \
+    apt-get install --no-install-recommends -y ca-certificates-java=20190405ubuntu1 && \
+    apt-get clean && \
+    rm -rf /var/lib/apt/lists/* && \
+    update-ca-certificates -f;
+
+ENV JAVA_HOME /usr/lib/jvm/java-8-openjdk-amd64/
+RUN export JAVA_HOME
+#
+ARG USERNAME=dev
+ENV HOME=/home/${USERNAME}
+USER ${USERNAME}
+WORKDIR ${HOME}
+
+ENV INTELLIJ_VERSION=CLion-211.7142.21
+ENV IDEA_INSTALL_DIR="${INTELLIJ_VERSION}"
+ENV IDEA_CONFIG_DIR=".${INTELLIJ_VERSION}"
+
+ARG INTELLIJ_IDE_TAR=${INTELLIJ_VERSION}.tar.gz
+
+RUN wget https://download-cf.jetbrains.com/cpp/${INTELLIJ_IDE_TAR}
+RUN tar xvf ${INTELLIJ_IDE_TAR} && \
+    mv clion-* ${IDEA_INSTALL_DIR}  && \
+    rm ${INTELLIJ_IDE_TAR}
+
+ENV IDEA_PROJECT_DIR="CLionProjects"
+RUN mkdir -p \
+    ${HOME}/${IDEA_PROJECT_DIR} \
+    ${HOME}/${IDEA_CONFIG_DIR}
+
+VOLUME ${HOME}/${IDEA_PROJECT_DIR}
+VOLUME ${HOME}/${IDEA_CONFIG_DIR}
+
+#install plugins
+ENV targetdir=${IDEA_INSTALL_DIR}/plugins
+
+USER root
+RUN apt-get update \
+    && apt-get install --no-install-recommends -y unzip \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/*
+USER ${USERNAME}
+
+RUN wget https://plugins.jetbrains.com/files/11956/69344/Conan-1.2.0.zip &&  \
+wget https://plugins.jetbrains.com/files/7499/120279/GitToolBox-203.5.10.zip && \
+wget https://plugins.jetbrains.com/files/7495/83042/idea-gitignore-3.2.3.201.zip && \
+wget https://plugins.jetbrains.com/files/7125/119202/GrepConsole.zip && \
+unzip "*.zip" -d $targetdir && \
+rm *.zip
+
+ENTRYPOINT ["/home/dev/CLion-211.7142.21/bin/clion.sh"]
