@@ -11,6 +11,7 @@ RUN apt-get update && apt-get install --no-install-recommends -y \
     clang=1:10.0-50~exp1 \
     clang-tidy=1:10.0-50~exp1 \
     iwyu \
+    cppcheck \
     make=4.2.1-1.2 \
     llvm-11=1:11.0.0-2~ubuntu20.04.1 \
     && apt-get clean \
