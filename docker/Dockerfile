@@ -168,7 +168,7 @@ USER root
 ## Install OpenJDK-8
 RUN apt-get update && \
     apt-get install --no-install-recommends -y \
-    openjdk-8-jdk=8u252-b09-1 && \
+    openjdk-8-jdk=8u292-b10-0ubuntu1~20.04 && \
     apt-get clean;
 
 # Fix certificate issues
