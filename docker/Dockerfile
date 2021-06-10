@@ -8,7 +8,7 @@ ENV DEBIAN_FRONTEND=noninteractive
 RUN apt-get update && apt-get install --no-install-recommends -y \
     apt-utils=2.0.5 \
     python3=3.8.2-0ubuntu2 \
-    python3-pip \
+    python3-pip=20.0.2-5ubuntu1.5 \
     git=1:2.25.1-1ubuntu3 \
     clang=1:10.0-50~exp1 \
     clang-tidy=1:10.0-50~exp1 \
@@ -30,7 +30,7 @@ RUN pip3 install --no-cache-dir conan==1.36.0
 RUN pip3 install --no-cache-dir invoke==1.5.0
 RUN pip3 install --no-cache-dir mumoco==0.2.1
 #TODO: This is only temporary
-RUN pip3 install --no-cache-dir eprint=0.0.5
+RUN pip3 install --no-cache-dir eprint==0.0.5
 
 # Add Setup Script
 COPY setup.sh /run/setup.sh
@@ -40,7 +40,7 @@ RUN chmod +x /run/setup.sh \
 #Install Cmake 3.19.2
 RUN apt-get update
 
-RUN apt-get install --no-install-recommends -y apt-transport-https ca-certificates gnupg software-properties-common wget
+RUN apt-get install --no-install-recommends -y apt-transport-https=2.0.5 ca-certificates=20210119~20.04.1 gnupg=2.2.19-3ubuntu2.1 software-properties-common=0.98.9.5 wget=1.20.3-1ubuntu1
 
 RUN wget -O --progress=dot:giga - https://apt.kitware.com/keys/kitware-archive-latest.asc 2>/dev/null | gpg --dearmor - | tee /etc/apt/trusted.gpg.d/kitware.gpg >/dev/null
 
@@ -48,16 +48,16 @@ RUN apt-add-repository 'deb https://apt.kitware.com/ubuntu/ focal main' && apt-g
 
 RUN apt-add-repository 'deb https://apt.kitware.com/ubuntu/ focal-rc main' && apt-get update
 
-RUN apt-get install -y  kitware-archive-keyring && rm /etc/apt/trusted.gpg.d/kitware.gpg
+RUN apt-get install -y  kitware-archive-keyring=2020.12.08 && rm /etc/apt/trusted.gpg.d/kitware.gpg
 
-RUN  apt-get install --no-install-recommends -y cmake
+RUN  apt-get install --no-install-recommends -y cmake=3.20.3-0kitware1ubuntu20.04.1
 
 #################### sonar-scanner ####################
 FROM build-system AS sonar
 
 RUN apt-get update && apt-get install --no-install-recommends -y \
-    wget \ 
-    unzip \
+    wget=1.20.3-1ubuntu1 \
+    unzip=6.0-25ubuntu1 \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
@@ -90,7 +90,7 @@ ARG USER_GID=$USER_UID
 RUN apt-get update && apt-get install --no-install-recommends -y \
     vim=2:8.1.2269-1ubuntu5 \
     sudo=1.8.31-1ubuntu1.2\
-    libncurses5 \
+    libncurses5=6.2-0ubuntu2 \
     ssh=1:8.2p1-4 \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/* 
@@ -126,7 +126,7 @@ RUN groupadd --gid $USER_GID $USERNAME \
     && useradd -s /bin/bash --uid $USER_UID --gid $USER_GID -m $USERNAME
 #
 # Add sudo support for the non-root user
-RUN apt-get install --no-install-recommends -y sudo \
+RUN apt-get install --no-install-recommends -y sudo=1.8.31-1ubuntu1.2 \
     && echo $USERNAME ALL=\(root\) NOPASSWD:ALL > /etc/sudoers.d/$USERNAME\
     && chmod 0440 /etc/sudoers.d/$USERNAME
 # Clean up
@@ -147,7 +147,7 @@ SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 ENV DEBIAN_FRONTEND=dialog
 
 RUN apt-get update && apt-get install --no-install-recommends -y \
-    openssh-server \
+    openssh-server=1:8.2p1-4ubuntu0.2 \
     rsync
 
 RUN  echo 'dev:pwd' | chpasswd
@@ -167,7 +167,7 @@ USER root
 ## Install OpenJDK-8
 RUN apt-get update && \
     apt-get install --no-install-recommends -y \
-    openjdk-8-jdk && \
+    openjdk-8-jdk=8u252-b09-1 && \
     apt-get clean;
 
 # Fix certificate issues
@@ -209,7 +209,7 @@ ENV targetdir=${IDEA_INSTALL_DIR}/plugins
 
 USER root
 RUN apt-get update \
-    && apt-get install --no-install-recommends -y unzip \
+    && apt-get install --no-install-recommends -y unzip=6.0-25ubuntu1 \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 USER ${USERNAME}
