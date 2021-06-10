@@ -1,7 +1,7 @@
 #################### Build-System Image ####################
 FROM ubuntu:20.04 AS build-system
 
-SHELL ["/bin/bash", "-o", "pipefail", "-c"]
+#SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 
 ENV DEBIAN_FRONTEND=noninteractive
 
@@ -42,7 +42,8 @@ RUN apt-get update
 
 RUN apt-get install --no-install-recommends -y apt-transport-https=2.0.5 ca-certificates=20210119~20.04.1 gnupg=2.2.19-3ubuntu2.1 software-properties-common=0.98.9.5 wget=1.20.3-1ubuntu1
 
-RUN wget -O --progress=dot:giga https://apt.kitware.com/keys/kitware-archive-latest.asc 2>/dev/null | gpg --dearmor - | tee /etc/apt/trusted.gpg.d/kitware.gpg >/dev/null
+# hadolint ignore=DL4006,DL3047
+RUN wget -O - https://apt.kitware.com/keys/kitware-archive-latest.asc 2>/dev/null | gpg --dearmor - | tee /etc/apt/trusted.gpg.d/kitware.gpg >/dev/null
 
 RUN apt-add-repository 'deb https://apt.kitware.com/ubuntu/ focal main' && apt-get update
 
