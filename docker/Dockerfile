@@ -1,10 +1,12 @@
 #################### Build-System Image ####################
 FROM ubuntu:20.04 AS build-system
 
+SHELL ["/bin/bash", "-o", "pipefail", "-c"]
+
 ENV DEBIAN_FRONTEND=noninteractive
 
 RUN apt-get update && apt-get install --no-install-recommends -y \
-    apt-utils \
+    apt-utils=2.0.5 \
     python3=3.8.2-0ubuntu2 \
     python3-pip \
     git=1:2.25.1-1ubuntu3 \
@@ -24,11 +26,11 @@ RUN ln -s /usr/bin/python3 /usr/bin/python \
     && rm -rf /usr/bin/pip \
     && ln -s /usr/bin/pip3 /usr/bin/pip
 
-RUN pip3 install conan==1.36.0
-RUN pip3 install invoke==1.5.0
-RUN pip3 install mumoco==0.2.1
+RUN pip3 install --no-cache-dir conan==1.36.0
+RUN pip3 install --no-cache-dir invoke==1.5.0
+RUN pip3 install --no-cache-dir mumoco==0.2.1
 #TODO: This is only temporary
-RUN pip3 install eprint
+RUN pip3 install --no-cache-dir eprint=0.0.5
 
 # Add Setup Script
 COPY setup.sh /run/setup.sh
@@ -40,13 +42,13 @@ RUN apt-get update
 
 RUN apt-get install --no-install-recommends -y apt-transport-https ca-certificates gnupg software-properties-common wget
 
-RUN wget -O - https://apt.kitware.com/keys/kitware-archive-latest.asc 2>/dev/null | gpg --dearmor - | tee /etc/apt/trusted.gpg.d/kitware.gpg >/dev/null
+RUN wget -O --progress=dot:giga - https://apt.kitware.com/keys/kitware-archive-latest.asc 2>/dev/null | gpg --dearmor - | tee /etc/apt/trusted.gpg.d/kitware.gpg >/dev/null
 
 RUN apt-add-repository 'deb https://apt.kitware.com/ubuntu/ focal main' && apt-get update
 
 RUN apt-add-repository 'deb https://apt.kitware.com/ubuntu/ focal-rc main' && apt-get update
 
-RUN apt-get install kitware-archive-keyring && rm /etc/apt/trusted.gpg.d/kitware.gpg
+RUN apt-get install -y  kitware-archive-keyring && rm /etc/apt/trusted.gpg.d/kitware.gpg
 
 RUN  apt-get install --no-install-recommends -y cmake
 
@@ -95,13 +97,13 @@ RUN apt-get update && apt-get install --no-install-recommends -y \
 
 #
 # Install Pylint
-RUN pip3 install pylint==2.6.0
+RUN pip3 install --no-cache-dir pylint==2.6.0
 #
 #AddJlink Debugger Server
 ARG TMP_JLINK_TGZ=/tmp
 ARG TAR_NAME=JLink_Linux_x86_64.tgz
 ARG FOLDER_JLINK=/opt/segger_jlink_v692
-RUN wget https://www.segger.com/downloads/jlink/${TAR_NAME} --directory-prefix=$TMP_JLINK_TGZ --post-data="accept_license_agreement=accepted"
+RUN wget --progress=dot:giga https://www.segger.com/downloads/jlink/${TAR_NAME} --directory-prefix=$TMP_JLINK_TGZ --post-data="accept_license_agreement=accepted"
 RUN mkdir ${FOLDER_JLINK} && tar -xzvf $TMP_JLINK_TGZ/$TAR_NAME -C ${FOLDER_JLINK} --strip 1
 RUN ls /opt/segger_jlink_v692
 RUN rm ${FOLDER_JLINK}/JLinkConfigExe
@@ -139,6 +141,8 @@ ENV DEBIAN_FRONTEND=dialog
 ##### Password: pwd
 ##########################################################
 FROM dev AS ssh-server
+
+SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 
 ENV DEBIAN_FRONTEND=dialog
 
@@ -187,7 +191,7 @@ ENV IDEA_CONFIG_DIR=".${INTELLIJ_VERSION}"
 
 ARG INTELLIJ_IDE_TAR=${INTELLIJ_VERSION}.tar.gz
 
-RUN wget https://download-cf.jetbrains.com/cpp/${INTELLIJ_IDE_TAR}
+RUN wget --progress=dot:giga https://download-cf.jetbrains.com/cpp/${INTELLIJ_IDE_TAR}
 RUN tar xvf ${INTELLIJ_IDE_TAR} && \
     mv clion-* ${IDEA_INSTALL_DIR}  && \
     rm ${INTELLIJ_IDE_TAR}
@@ -210,10 +214,10 @@ RUN apt-get update \
     && rm -rf /var/lib/apt/lists/*
 USER ${USERNAME}
 
-RUN wget https://plugins.jetbrains.com/files/11956/69344/Conan-1.2.0.zip &&  \
-wget https://plugins.jetbrains.com/files/7499/120279/GitToolBox-203.5.10.zip && \
-wget https://plugins.jetbrains.com/files/7495/83042/idea-gitignore-3.2.3.201.zip && \
-wget https://plugins.jetbrains.com/files/7125/119202/GrepConsole.zip && \
+RUN wget --progress=dot:giga https://plugins.jetbrains.com/files/11956/69344/Conan-1.2.0.zip &&  \
+wget --progress=dot:giga https://plugins.jetbrains.com/files/7499/120279/GitToolBox-203.5.10.zip && \
+wget --progress=dot:giga https://plugins.jetbrains.com/files/7495/83042/idea-gitignore-3.2.3.201.zip && \
+wget --progress=dot:giga https://plugins.jetbrains.com/files/7125/119202/GrepConsole.zip && \
 unzip "*.zip" -d $targetdir && \
 rm *.zip
 
