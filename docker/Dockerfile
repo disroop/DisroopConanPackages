@@ -186,27 +186,27 @@ ENV HOME=/home/${USERNAME}
 USER ${USERNAME}
 WORKDIR ${HOME}
 
-ENV INTELLIJ_VERSION=CLion-211.7142.21
-ENV IDEA_INSTALL_DIR="${INTELLIJ_VERSION}"
-ENV IDEA_CONFIG_DIR=".${INTELLIJ_VERSION}"
+ENV CLION_VERSION=CLion-2021.1.2
+ENV CLION_INSTALL_DIR="${CLION_VERSION}"
+ENV CLION_CONFIG_DIR=".${CLION_VERSION}"
 
-ARG INTELLIJ_IDE_TAR=${INTELLIJ_VERSION}.tar.gz
+ARG CLION_IDE_TAR=${CLION_VERSION}.tar.gz
 
-RUN wget --progress=dot:giga https://download-cf.jetbrains.com/cpp/${INTELLIJ_IDE_TAR}
-RUN tar xvf ${INTELLIJ_IDE_TAR} && \
-    mv clion-* ${IDEA_INSTALL_DIR}  && \
-    rm ${INTELLIJ_IDE_TAR}
+RUN wget --progress=dot:giga https://download-cf.jetbrains.com/cpp/${CLION_IDE_TAR}
+RUN tar xvf ${CLION_IDE_TAR} && \
+    mv clion-* ${CLION_INSTALL_DIR}  && \
+    rm ${CLION_IDE_TAR}
 
-ENV IDEA_PROJECT_DIR="CLionProjects"
+ENV CLION_PROJECT_DIR="CLionProjects"
 RUN mkdir -p \
-    ${HOME}/${IDEA_PROJECT_DIR} \
-    ${HOME}/${IDEA_CONFIG_DIR}
+    ${HOME}/${CLION_PROJECT_DIR} \
+    ${HOME}/${CLION_CONFIG_DIR}
 
-VOLUME ${HOME}/${IDEA_PROJECT_DIR}
-VOLUME ${HOME}/${IDEA_CONFIG_DIR}
+VOLUME ${HOME}/${CLION_PROJECT_DIR}
+VOLUME ${HOME}/${CLION_CONFIG_DIR}
 
 #install plugins
-ENV targetdir=${IDEA_INSTALL_DIR}/plugins
+ENV targetdir=${CLION_INSTALL_DIR}/plugins
 
 USER root
 RUN apt-get update \
@@ -222,4 +222,4 @@ wget --progress=dot:giga https://plugins.jetbrains.com/files/7125/119202/GrepCon
 unzip "*.zip" -d $targetdir && \
 rm *.zip
 
-ENTRYPOINT ["/home/dev/CLion-211.7142.21/bin/clion.sh"]
+ENTRYPOINT ["/home/dev/CLion-2021.1.2/bin/clion.sh"]
