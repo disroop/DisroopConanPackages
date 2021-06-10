@@ -148,7 +148,7 @@ ENV DEBIAN_FRONTEND=dialog
 
 RUN apt-get update && apt-get install --no-install-recommends -y \
     openssh-server=1:8.2p1-4ubuntu0.2 \
-    rsync
+    rsync=3.1.3-8
 
 RUN  echo 'dev:pwd' | chpasswd
 
