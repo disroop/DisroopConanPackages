@@ -31,7 +31,7 @@ RUN pip3 install mumoco==0.2.1
 RUN pip3 install eprint
 
 # Add Setup Script
-ADD setup.sh /run/setup.sh
+COPY setup.sh /run/setup.sh
 RUN chmod +x /run/setup.sh \
     && ln -s /run/setup.sh /usr/bin/setup
 
