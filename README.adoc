@@ -20,5 +20,7 @@ https://hub.docker.com/r/disroop/embedded-hipster-dev
 
 Developer Image with SSH-Server: https://hub.docker.com/r/disroop/embedded-hipster-ssh
 
+Developer Image with Clion: https://hub.docker.com/r/disroop/embedded-hipster-clion
+
 
 
