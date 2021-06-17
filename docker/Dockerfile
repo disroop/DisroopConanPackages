@@ -20,12 +20,13 @@ RUN apt-get update && apt-get install --no-install-recommends -y \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
-#Set sy,links to tool
+#Set sym links to tool
 RUN ln -s /usr/bin/llvm-cov-11 /usr/bin/llvm-cov \
     && ln -s /usr/bin/python3 /usr/bin/python \
     && rm -rf /usr/bin/pip \
     && ln -s /usr/bin/pip3 /usr/bin/pip
 
+#Set Install PIP Packages
 RUN pip3 install --no-cache-dir conan==1.36.0 \
     && pip3 install --no-cache-dir invoke==1.5.0 \
     && pip3 install --no-cache-dir mumoco==0.2.1
@@ -154,9 +155,8 @@ RUN apt-get update && apt-get install --no-install-recommends -y \
     openssh-server=1:8.2p1-4ubuntu0.2 \
     rsync=3.1.3-8
 
+#Define  new password
 RUN  echo 'dev:pwd' | chpasswd
-
-RUN service ssh start
 
 EXPOSE 22
 
@@ -169,10 +169,11 @@ FROM dev AS clion
 USER root
 
 ## Install OpenJDK-8
-RUN apt-get update && \
-    apt-get install --no-install-recommends -y \
-    openjdk-8-jdk=8u292-b10-0ubuntu1~20.04 && \
-    apt-get clean;
+RUN apt-get update \
+    && apt-get install --no-install-recommends -y \
+    && openjdk-8-jdk=8u292-b10-0ubuntu1~20.04 \
+    && apt-get clean -y \
+    && rm -rf /var/lib/apt/lists/*
 
 # Fix certificate issues
 RUN apt-get update  \
@@ -196,10 +197,10 @@ ENV CLION_CONFIG_DIR=".${CLION_VERSION}"
 
 ARG CLION_IDE_TAR=${CLION_VERSION}.tar.gz
 
-RUN wget --progress=dot:giga https://download-cf.jetbrains.com/cpp/${CLION_IDE_TAR}
-RUN tar xvf ${CLION_IDE_TAR} && \
-    mv clion-* ${CLION_INSTALL_DIR}  && \
-    rm ${CLION_IDE_TAR}
+RUN wget --progress=dot:giga https://download-cf.jetbrains.com/cpp/${CLION_IDE_TAR}\
+    && tar xvf ${CLION_IDE_TAR} \
+    &&  mv clion-* ${CLION_INSTALL_DIR} \
+    && rm ${CLION_IDE_TAR}
 
 ENV CLION_PROJECT_DIR="CLionProjects"
 RUN mkdir -p \
@@ -223,7 +224,7 @@ RUN wget --progress=dot:giga https://plugins.jetbrains.com/files/11956/69344/Con
 wget --progress=dot:giga https://plugins.jetbrains.com/files/7499/120279/GitToolBox-203.5.10.zip && \
 wget --progress=dot:giga https://plugins.jetbrains.com/files/7495/83042/idea-gitignore-3.2.3.201.zip && \
 wget --progress=dot:giga https://plugins.jetbrains.com/files/7125/119202/GrepConsole.zip && \
-unzip "*.zip" -d $targetdir && \
-rm *.zip
+unzip "./*.zip" -d $targetdir && \
+rm ./*.zip
 
 ENTRYPOINT ["/home/dev/CLion-2021.1.2/bin/clion.sh"]
