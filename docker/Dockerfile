@@ -52,7 +52,7 @@ RUN wget -O - https://apt.kitware.com/keys/kitware-archive-latest.asc 2>/dev/nul
     && apt-add-repository 'deb https://apt.kitware.com/ubuntu/ focal-rc main' && apt-get update \
     && apt-get install --no-install-recommends -y  \
     kitware-archive-keyring=2020.12.08 && rm /etc/apt/trusted.gpg.d/kitware.gpg \
-    && apt-get install --no-install-recommends -y cmake=3.20.3-0kitware1ubuntu20.04.1 \
+    && apt-get install --no-install-recommends -y cmake=3.20.4-0kitware1ubuntu20.04.1 \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
