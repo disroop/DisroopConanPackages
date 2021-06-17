@@ -20,18 +20,15 @@ RUN apt-get update && apt-get install --no-install-recommends -y \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
-RUN ln -s /usr/bin/llvm-cov-11 /usr/bin/llvm-cov
-
-#Remove python 2.7 us pyhton3 as default
-RUN ln -s /usr/bin/python3 /usr/bin/python \
+#Set sy,links to tool
+RUN ln -s /usr/bin/llvm-cov-11 /usr/bin/llvm-cov \
+    && ln -s /usr/bin/python3 /usr/bin/python \
     && rm -rf /usr/bin/pip \
     && ln -s /usr/bin/pip3 /usr/bin/pip
 
-RUN pip3 install --no-cache-dir conan==1.36.0
-RUN pip3 install --no-cache-dir invoke==1.5.0
-RUN pip3 install --no-cache-dir mumoco==0.2.1
-#TODO: This is only temporary
-RUN pip3 install --no-cache-dir eprint==0.0.5
+RUN pip3 install --no-cache-dir conan==1.36.0 \
+    && pip3 install --no-cache-dir invoke==1.5.0 \
+    && pip3 install --no-cache-dir mumoco==0.2.1
 
 # Add Setup Script
 COPY setup.sh /run/setup.sh
@@ -39,20 +36,25 @@ RUN chmod +x /run/setup.sh \
     && ln -s /run/setup.sh /usr/bin/setup
 
 #Install Cmake 3.19.2
-RUN apt-get update
-
-RUN apt-get install --no-install-recommends -y apt-transport-https=2.0.5 ca-certificates=20210119~20.04.1 gnupg=2.2.19-3ubuntu2.1 software-properties-common=0.98.9.5 wget=1.20.3-1ubuntu1
+RUN apt-get update \
+    && apt-get install --no-install-recommends -y \
+    apt-transport-https=2.0.5 \
+    ca-certificates=20210119~20.04.1 \
+    gnupg=2.2.19-3ubuntu2.1 \
+    software-properties-common=0.98.9.5 \
+    wget=1.20.3-1ubuntu1 \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/*
 
 # hadolint ignore=DL4006,DL3047
-RUN wget -O - https://apt.kitware.com/keys/kitware-archive-latest.asc 2>/dev/null | gpg --dearmor - | tee /etc/apt/trusted.gpg.d/kitware.gpg >/dev/null
-
-RUN apt-add-repository 'deb https://apt.kitware.com/ubuntu/ focal main' && apt-get update
-
-RUN apt-add-repository 'deb https://apt.kitware.com/ubuntu/ focal-rc main' && apt-get update
-
-RUN apt-get install -y  kitware-archive-keyring=2020.12.08 && rm /etc/apt/trusted.gpg.d/kitware.gpg
-
-RUN  apt-get install --no-install-recommends -y cmake=3.20.3-0kitware1ubuntu20.04.1
+RUN wget -O - https://apt.kitware.com/keys/kitware-archive-latest.asc 2>/dev/null | gpg --dearmor - | tee /etc/apt/trusted.gpg.d/kitware.gpg >/dev/null \
+    && apt-add-repository 'deb https://apt.kitware.com/ubuntu/ focal main' && apt-get update \
+    && apt-add-repository 'deb https://apt.kitware.com/ubuntu/ focal-rc main' && apt-get update \
+    && apt-get install --no-install-recommends -y  \
+    kitware-archive-keyring=2020.12.08 && rm /etc/apt/trusted.gpg.d/kitware.gpg \
+    && apt-get install --no-install-recommends -y cmake=3.20.3-0kitware1ubuntu20.04.1 \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/*
 
 #################### sonar-scanner ####################
 FROM build-system AS sonar
@@ -105,22 +107,22 @@ RUN pip3 install --no-cache-dir pylint==2.6.0
 ARG TMP_JLINK_TGZ=/tmp
 ARG TAR_NAME=JLink_Linux_x86_64.tgz
 ARG FOLDER_JLINK=/opt/segger_jlink_v692
-RUN wget --progress=dot:giga https://www.segger.com/downloads/jlink/${TAR_NAME} --directory-prefix=$TMP_JLINK_TGZ --post-data="accept_license_agreement=accepted"
-RUN mkdir ${FOLDER_JLINK} && tar -xzvf $TMP_JLINK_TGZ/$TAR_NAME -C ${FOLDER_JLINK} --strip 1
-RUN ls /opt/segger_jlink_v692
-RUN rm ${FOLDER_JLINK}/JLinkConfigExe
-RUN rm ${FOLDER_JLINK}/JLinkGDBServerExe
-RUN rm ${FOLDER_JLINK}/JLinkGUIServerExe
-RUN rm ${FOLDER_JLINK}/JLinkRemoteServer
-RUN rm ${FOLDER_JLINK}/JLinkRemoteServerCLExe
-RUN rm ${FOLDER_JLINK}/JLinkRemoteServerExe
-RUN rm ${FOLDER_JLINK}/JLinkRTTViewerExe
-RUN rm ${FOLDER_JLINK}/JLinkSWOViewerExe
-RUN rm ${FOLDER_JLINK}/JLinkRegistration
-RUN rm ${FOLDER_JLINK}/JLinkRegistrationExe
-RUN rm ${FOLDER_JLINK}/JLinkLicenseManager
-RUN rm ${FOLDER_JLINK}/JLinkLicenseManagerExe
-RUN rm -rf ${FOLDER_JLINK}/Samples
+RUN wget --progress=dot:giga https://www.segger.com/downloads/jlink/${TAR_NAME} --directory-prefix=$TMP_JLINK_TGZ --post-data="accept_license_agreement=accepted" \
+    && mkdir ${FOLDER_JLINK} && tar -xzvf $TMP_JLINK_TGZ/$TAR_NAME -C ${FOLDER_JLINK} --strip 1 \
+    && ls /opt/segger_jlink_v692 \
+    && rm ${FOLDER_JLINK}/JLinkConfigExe \
+    && rm ${FOLDER_JLINK}/JLinkGDBServerExe \
+    && rm ${FOLDER_JLINK}/JLinkGUIServerExe \
+    && rm ${FOLDER_JLINK}/JLinkRemoteServer \
+    && rm ${FOLDER_JLINK}/JLinkRemoteServerCLExe \
+    && rm ${FOLDER_JLINK}/JLinkRemoteServerExe \
+    && rm ${FOLDER_JLINK}/JLinkRTTViewerExe \
+    && rm ${FOLDER_JLINK}/JLinkSWOViewerExe \
+    && rm ${FOLDER_JLINK}/JLinkRegistration \
+    && rm ${FOLDER_JLINK}/JLinkRegistrationExe \
+    && rm ${FOLDER_JLINK}/JLinkLicenseManager \
+    && rm ${FOLDER_JLINK}/JLinkLicenseManagerExe \
+    && rm -rf ${FOLDER_JLINK}/Samples
 ENV PATH="${FOLDER_JLINK}:${PATH}"
 #
 # Create a non-root user to use if preferred - see https://aka.ms/vscode-remote/containers/non-root-user.
@@ -173,11 +175,12 @@ RUN apt-get update && \
     apt-get clean;
 
 # Fix certificate issues
-RUN apt-get update && \
-    apt-get install --no-install-recommends -y ca-certificates-java=20190405ubuntu1 && \
-    apt-get clean && \
-    rm -rf /var/lib/apt/lists/* && \
-    update-ca-certificates -f;
+RUN apt-get update  \
+    && apt-get install --no-install-recommends -y \
+    && ca-certificates-java=20190405ubuntu1 \
+    && update-ca-certificates -f \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/*
 
 ENV JAVA_HOME /usr/lib/jvm/java-8-openjdk-amd64/
 RUN export JAVA_HOME
