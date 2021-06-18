@@ -27,9 +27,7 @@ RUN ln -s /usr/bin/llvm-cov-11 /usr/bin/llvm-cov \
     && ln -s /usr/bin/pip3 /usr/bin/pip
 
 #Set Install PIP Packages
-RUN pip3 install --no-cache-dir conan==1.36.0 \
-    && pip3 install --no-cache-dir invoke==1.5.0 \
-    && pip3 install --no-cache-dir mumoco==0.2.1
+RUN pip3 install --no-cache-dir conan==1.36.0 invoke==1.5.0 mumoco==0.2.1
 
 # Add Setup Script
 COPY setup.sh /run/setup.sh
