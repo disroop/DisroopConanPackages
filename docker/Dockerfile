@@ -165,8 +165,6 @@ CMD ["/usr/sbin/sshd", "-D"]
 ################################################################################################################################################################
 FROM dev AS clion
 
-ENV DEBIAN_FRONTEND=dialog
-
 ## Install OpenJDK-8
 RUN apt-get update \
     && apt-get install --no-install-recommends -y \
