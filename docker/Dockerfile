@@ -164,17 +164,20 @@ CMD ["/usr/sbin/sshd", "-D"]
 # Clion Environment Image ######################################################################################################################################
 ################################################################################################################################################################
 FROM dev AS clion
-USER root
+
+ENV DEBIAN_FRONTEND=dialog
 
 ## Install OpenJDK-8
 RUN apt-get update \
     && apt-get install --no-install-recommends -y \
-    && openjdk-8-jdk=8u292-b10-0ubuntu1~20.04
+    openjdk-8-jdk=8u292-b10-0ubuntu1~20.04 \
+    && apt-get clean -y \
+    && rm -rf /var/lib/apt/lists/*
 
 # Fix certificate issues
 RUN apt-get update  \
     && apt-get install --no-install-recommends -y \
-    && ca-certificates-java=20190405ubuntu1 \
+    ca-certificates-java=20190405ubuntu1 \
     && update-ca-certificates -f \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
