@@ -5,6 +5,8 @@ FROM ubuntu:20.04 AS build-system
 
 ENV DEBIAN_FRONTEND=noninteractive
 
+ENV AM_I_IN_A_DISROOP_DOCKER_CONTAINER Yes
+
 RUN apt-get update && apt-get install --no-install-recommends -y \
     apt-utils=2.0.5 \
     python3=3.8.2-0ubuntu2 \
