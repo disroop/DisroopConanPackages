@@ -14,6 +14,7 @@ RUN apt-get update && apt-get install --no-install-recommends -y \
     git=1:2.25.1-1ubuntu3 \
     clang=1:10.0-50~exp1 \
     clang-tidy=1:10.0-50~exp1 \
+    clang-format=1:10.0-50~exp1 \
     iwyu=8.0-3build1 \
     cppcheck=1.90-4build1 \
     make=4.2.1-1.2 \
