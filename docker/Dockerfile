@@ -3,18 +3,25 @@ FROM ubuntu:20.04 AS build-system
 
 #SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 
+RUN apt-get update && apt-get install --no-install-recommends -y \
+    ca-certificates=20210119~20.04.1 
+
+COPY sources.list /etc/apt/sources.list 
+
+
 ENV DEBIAN_FRONTEND=noninteractive
 
 ENV AM_I_IN_A_DISROOP_DOCKER_CONTAINER Yes
 
+
 RUN apt-get update && apt-get install --no-install-recommends -y \
-    apt-utils=2.0.5 \
+    apt-utils=2.0.6 \
     python3=3.8.2-0ubuntu2 \
     python3-pip=20.0.2-5ubuntu1.5 \
     git=1:2.25.1-1ubuntu3 \
-    clang=1:10.0-50~exp1 \
-    clang-tidy=1:10.0-50~exp1 \
-    clang-format=1:10.0-50~exp1 \
+    clang-10=1:10.0.0-4ubuntu1 \
+    clang-tidy-10=1:10.0.0-4ubuntu1\
+    clang-format-10=1:10.0.0-4ubuntu1 \
     iwyu=8.0-3build1 \
     cppcheck=1.90-4build1 \
     make=4.2.1-1.2 \
@@ -23,8 +30,12 @@ RUN apt-get update && apt-get install --no-install-recommends -y \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
-#Set sym links to tool
+#Set sym links to tools
 RUN ln -s /usr/bin/llvm-cov-11 /usr/bin/llvm-cov \
+    && ln -s /usr/bin/clang-10 /usr/bin/clang \
+    && ln -s /usr/bin/clang++-10 /usr/bin/clang++\
+    && ln -s /usr/bin/clang-tidy-10 /usr/bin/clang-tidy \
+    && ln -s /usr/bin/clang-format-10 /usr/bin/clang-format \
     && ln -s /usr/bin/python3 /usr/bin/python \
     && rm -rf /usr/bin/pip \
     && ln -s /usr/bin/pip3 /usr/bin/pip
@@ -37,26 +48,18 @@ COPY setup.sh /run/setup.sh
 RUN chmod +x /run/setup.sh \
     && ln -s /run/setup.sh /usr/bin/setup
 
-#Install Cmake 3.19.2
-RUN apt-get update \
-    && apt-get install --no-install-recommends -y \
-    apt-transport-https=2.0.5 \
-    ca-certificates=20210119~20.04.1 \
-    gnupg=2.2.19-3ubuntu2.1 \
-    software-properties-common=0.98.9.5 \
+#Install Cmake 3.20.5
+RUN apt-get update && apt-get install --no-install-recommends -y \
     wget=1.20.3-1ubuntu1 \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
-# hadolint ignore=DL4006,DL3047
-RUN wget -O - https://apt.kitware.com/keys/kitware-archive-latest.asc 2>/dev/null | gpg --dearmor - | tee /etc/apt/trusted.gpg.d/kitware.gpg >/dev/null \
-    && apt-add-repository 'deb https://apt.kitware.com/ubuntu/ focal main' && apt-get update \
-    && apt-add-repository 'deb https://apt.kitware.com/ubuntu/ focal-rc main' && apt-get update \
-    && apt-get install --no-install-recommends -y  \
-    kitware-archive-keyring=2020.12.08 && rm /etc/apt/trusted.gpg.d/kitware.gpg \
-    && apt-get install --no-install-recommends -y cmake=3.20.5-0kitware1ubuntu20.04.1 \
-    && apt-get clean \
-    && rm -rf /var/lib/apt/lists/*
+RUN wget https://disroop.jfrog.io/artifactory/third-party-mirror/cmake-3.20.5-linux-x86_64.tar.gz\
+    && tar -zxvf cmake-3.20.5-linux-x86_64.tar.gz \
+    && cp cmake-3.20.5-linux-x86_64/bin/cmake /usr/bin/cmake \
+    && cp cmake-3.20.5-linux-x86_64/bin/ctest /usr/bin/ctest \
+    && rm -rf cmake-3.20.5-linux-x86_64 \
+    && rm -rf cmake-3.20.5-linux-x86_64.tar.gz
 
 #################### sonar-scanner ####################
 FROM build-system AS sonar
@@ -69,14 +72,14 @@ RUN apt-get update && apt-get install --no-install-recommends -y \
 
 # Sonar Build Wrapper
 ARG BUILD_WRAPPER_HOME=/opt/build-wrapper-linux-x86
-RUN wget -q -O /opt/build-wrapper-linux-x86.zip https://sonarcloud.io/static/cpp/build-wrapper-linux-x86.zip \
+RUN wget -q -O /opt/build-wrapper-linux-x86.zip https://disroop.jfrog.io/artifactory/third-party-mirror/sonar-cloud-build-wrapper-linux-x86.zip \
     && unzip /opt/build-wrapper-linux-x86.zip -d /opt \
     && rm /opt/build-wrapper-linux-x86.zip
 ENV BUILD_WRAPPER_HOME=${BUILD_WRAPPER_HOME} PATH=${BUILD_WRAPPER_HOME}:${PATH}
 RUN ln -s ${BUILD_WRAPPER_HOME}/build-wrapper-linux-x86-64 ${BUILD_WRAPPER_HOME}/build-wrapper
 
 # Sonar Scanner
-RUN wget -q -O /opt/sonar-scanner-cli.zip https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-4.6.2.2472-linux.zip \
+RUN wget -q -O /opt/sonar-scanner-cli.zip https://disroop.jfrog.io/artifactory/third-party-mirror/sonar-scanner-cli-4.6.2.2472-linux.zip \
     && unzip /opt/sonar-scanner-cli.zip -d /opt \
     && rm /opt/sonar-scanner-cli.zip
 
@@ -108,10 +111,9 @@ RUN pip3 install --no-cache-dir pylint==2.6.0
 #AddJlink Debugger Server
 ARG TMP_JLINK_TGZ=/tmp
 ARG TAR_NAME=JLink_Linux_x86_64.tgz
-ARG FOLDER_JLINK=/opt/segger_jlink_v692
-RUN wget --progress=dot:giga https://www.segger.com/downloads/jlink/${TAR_NAME} --directory-prefix=$TMP_JLINK_TGZ --post-data="accept_license_agreement=accepted" \
-    && mkdir ${FOLDER_JLINK} && tar -xzvf $TMP_JLINK_TGZ/$TAR_NAME -C ${FOLDER_JLINK} --strip 1 \
-    && ls /opt/segger_jlink_v692 \
+ARG FOLDER_JLINK=/opt/segger-jlink
+RUN wget https://disroop.jfrog.io/artifactory/third-party-mirror/JLink_Linux_V750_x86_64.tgz --directory-prefix=$TMP_JLINK_TGZ \
+    && mkdir ${FOLDER_JLINK} && tar -xzvf $TMP_JLINK_TGZ/JLink_Linux_V750_x86_64.tgz -C ${FOLDER_JLINK} --strip 1 \
     && rm ${FOLDER_JLINK}/JLinkConfigExe \
     && rm ${FOLDER_JLINK}/JLinkGDBServerExe \
     && rm ${FOLDER_JLINK}/JLinkGUIServerExe \

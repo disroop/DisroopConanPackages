@@ -1,0 +1,13 @@
+deb https://disroop.jfrog.io/artifactory/disroop-ubuntu-archive/ focal main restricted
+
+deb https://disroop.jfrog.io/artifactory/disroop-ubuntu-archive/ focal-updates main restricted
+
+deb https://disroop.jfrog.io/artifactory/disroop-ubuntu-archive/ focal universe
+deb https://disroop.jfrog.io/artifactory/disroop-ubuntu-archive/ focal-updates universe
+
+deb https://disroop.jfrog.io/artifactory/disroop-ubuntu-archive/ focal multiverse
+
+deb https://disroop.jfrog.io/artifactory/disroop-ubuntu-archive/ focal-backports main restricted universe multiverse
+
+deb https://disroop.jfrog.io/artifactory/disroop-ubuntu-security/ focal-security universe
+deb https://disroop.jfrog.io/artifactory/disroop-ubuntu-security/ focal-security multiverse
