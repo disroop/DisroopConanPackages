@@ -54,7 +54,7 @@ RUN apt-get update && apt-get install --no-install-recommends -y \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
-RUN wget https://disroop.jfrog.io/artifactory/third-party-mirror/cmake-3.20.5-linux-x86_64.tar.gz\
+RUN wget -q https://disroop.jfrog.io/artifactory/third-party-mirror/cmake-3.20.5-linux-x86_64.tar.gz\
     && tar -zxvf cmake-3.20.5-linux-x86_64.tar.gz \
     && cp cmake-3.20.5-linux-x86_64/bin/cmake /usr/bin/cmake \
     && cp cmake-3.20.5-linux-x86_64/bin/ctest /usr/bin/ctest \
