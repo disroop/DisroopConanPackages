@@ -4,7 +4,9 @@ FROM ubuntu:20.04 AS build-system
 #SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 
 RUN apt-get update && apt-get install --no-install-recommends -y \
-    ca-certificates=20210119~20.04.1 
+    ca-certificates=20210119~20.04.1 \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/*
 
 COPY sources.list /etc/apt/sources.list 
 
@@ -52,9 +54,8 @@ RUN chmod +x /run/setup.sh \
 RUN apt-get update && apt-get install --no-install-recommends -y \
     wget=1.20.3-1ubuntu1 \
     && apt-get clean \
-    && rm -rf /var/lib/apt/lists/*
-
-RUN wget --progress=dot:giga https://disroop.jfrog.io/artifactory/third-party-mirror/cmake-3.20.5-linux-x86_64.tar.gz\
+    && rm -rf /var/lib/apt/lists/* \
+    && wget --progress=dot:giga https://disroop.jfrog.io/artifactory/third-party-mirror/cmake-3.20.5-linux-x86_64.tar.gz\
     && tar -zxvf cmake-3.20.5-linux-x86_64.tar.gz \
     && cp cmake-3.20.5-linux-x86_64/bin/cmake /usr/bin/cmake \
     && cp cmake-3.20.5-linux-x86_64/bin/ctest /usr/bin/ctest \
