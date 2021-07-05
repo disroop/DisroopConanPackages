@@ -1,5 +1,5 @@
 #################### Build-System Image ####################
-FROM ubuntu:20.10 AS build-system
+FROM ubuntu:21.10 AS build-system
 
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 
