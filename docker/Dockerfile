@@ -1,7 +1,7 @@
 #################### Build-System Image ####################
 FROM ubuntu:20.04 AS build-system
 
-#SHELL ["/bin/bash", "-o", "pipefail", "-c"]
+SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 
 RUN apt-get update && apt-get install --no-install-recommends -y \
     ca-certificates=20210119~20.04.1 \
