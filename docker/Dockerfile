@@ -55,12 +55,7 @@ RUN apt-get update && apt-get install --no-install-recommends -y \
     wget=1.20.3-1ubuntu1 \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/* \
-    && wget --progress=dot:giga https://disroop.jfrog.io/artifactory/third-party-mirror/cmake-3.20.5-linux-x86_64.tar.gz\
-    && tar -zxvf cmake-3.20.5-linux-x86_64.tar.gz \
-    && cp cmake-3.20.5-linux-x86_64/bin/cmake /usr/bin/cmake \
-    && cp cmake-3.20.5-linux-x86_64/bin/ctest /usr/bin/ctest \
-    && rm -rf cmake-3.20.5-linux-x86_64 \
-    && rm -rf cmake-3.20.5-linux-x86_64.tar.gz
+    && wget --progress=dot:giga -qO- "https://disroop.jfrog.io/artifactory/third-party-mirror/cmake-3.20.5-linux-x86_64.tar.gz" | tar --strip-components=1 -xz -C /usr/local
 
 #################### sonar-scanner ####################
 FROM build-system AS sonar
