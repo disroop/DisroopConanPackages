@@ -35,4 +35,4 @@ if __name__ == '__main__':
     docker_build_push('dev', 'embedded-hipster-dev', docker_version, pushImage)
     docker_build_push('ssh-server', 'embedded-hipster-ssh', docker_version, pushImage)
     docker_build_push('sonar', 'embedded-hipster-sonar', docker_version, pushImage)
-    #TODO: doesn't build docker_build_push('clion', 'embedded-hipster-clion', docker_version, pushImage)
+    docker_build_push('clion', 'embedded-hipster-clion', docker_version, pushImage)
