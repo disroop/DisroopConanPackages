@@ -96,6 +96,7 @@ RUN apt-get update && apt-get install --no-install-recommends -y \
     sudo=1.8.31-1ubuntu1.2\
     libncurses5=6.2-0ubuntu2 \
     ssh=1:8.2p1-4 \
+    graphviz=2.42.2-3build2 \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/* 
 
@@ -151,7 +152,7 @@ ENV DEBIAN_FRONTEND=dialog
 
 RUN apt-get update && apt-get install --no-install-recommends -y \
     openssh-server=1:8.2p1-4ubuntu0.2 \
-    rsync=3.1.3-8
+    rsync=3.1.3-8 
 
 #Define  new password
 RUN  echo 'dev:pwd' | chpasswd
