@@ -13,7 +13,7 @@ class Stm32BspIotNode(ConanFile):
     version = "1.1.7"
     license = "MIT"
     description = "BSP definition for STM32 Iot Node devoce"
-    generators =  "CMakeDeps","CMakeToolchain","cmake_vars"
+    generators =  "CMakeDeps","CMakeToolchain"
     settings = "os", "compiler", "build_type", "arch"
     exports_sources = "CMakeLists.txt", "src/*",
     options = {"irq_spi_interface_prio":"ANY"}
@@ -39,8 +39,6 @@ class Stm32BspIotNode(ConanFile):
     
     def requirements(self):
         self.requires(f"stm32_hal_l4/1.13.0@{project_username}/{project_channel}")
-        self.requires(f"cmake_vars/1.0.0@disroop/development",private=True)
-
 
     def package(self):
         self.copy("*.h", src=f"src", dst = "include", keep_path = True)

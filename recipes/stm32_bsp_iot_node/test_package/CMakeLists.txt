@@ -3,8 +3,9 @@
 # $ cmake --version
 
 cmake_minimum_required(VERSION 3.16 FATAL_ERROR)
+set(CMAKE_TRY_COMPILE_TARGET_TYPE STATIC_LIBRARY)
 #Include Conan
-include(${CMAKE_CURRENT_BINARY_DIR}/cmake_vars.cmake)
+
 include(${CMAKE_CURRENT_BINARY_DIR}/conan_toolchain.cmake)
 # Set the project name
 project(test C)

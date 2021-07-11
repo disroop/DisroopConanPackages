@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.16)
-include(${CMAKE_CURRENT_BINARY_DIR}/cmake_vars.cmake)
+set(CMAKE_TRY_COMPILE_TARGET_TYPE STATIC_LIBRARY)
 include(${CMAKE_CURRENT_BINARY_DIR}/conan_toolchain.cmake)
 project(STM_BSP_IOT_NODE C ASM)
 

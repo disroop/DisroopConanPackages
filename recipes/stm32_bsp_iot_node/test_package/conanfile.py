@@ -15,11 +15,8 @@ class Stm32BspIotNodeTest(ConanFile):
     default_channel = f"{project_channel}"
     default_user = f"{project_username}"
     settings = "os", "compiler", "build_type", "arch"
-    generators = "CMakeDeps","CMakeToolchain","cmake_vars"
+    generators = "CMakeDeps","CMakeToolchain"
     exports_sources = "src/*", "CMakeLists.txt"
-    
-    def requirements(self):
-        self.requires(f"cmake_vars/1.0.0@{project_username}/{project_channel}",private=True)
 
     def build(self):
         cmake = CMake(self)

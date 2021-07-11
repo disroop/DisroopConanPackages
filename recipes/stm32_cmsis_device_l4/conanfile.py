@@ -16,14 +16,12 @@ class Stm32CmsisDeviceL4(ConanFile):
     user = f"{project_username}"
     license = "MIT"
     description = "This is the runtime setup of CMSIS devices provided by stm"
-    generators = "virtualenv", "cmake", "cmake_vars"
+    generators = "virtualenv", "cmake"
     settings = "os", "compiler", "build_type", "arch"
     exports_sources = "CMakeLists.txt"
 
     def requirements(self):
         self.requires(f"stm32_cmsis_core/5.6.0_cm4@{project_username}/{project_channel}")
-        self.requires(f"cmake_vars/1.0.0@{project_username}/{project_channel}",private=True)
-
 
     def source(self):
         git=tools.Git(folder=self.source_folder)
