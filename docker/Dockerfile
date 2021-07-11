@@ -29,6 +29,7 @@ RUN apt-get update && apt-get install --no-install-recommends -y \
     make=4.2.1-1.2 \
     llvm-11=1:11.0.0-2~ubuntu20.04.1 \
     gdb=9.2-0ubuntu1~20.04 \
+    graphviz=2.42.2-3build2 \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
@@ -96,7 +97,6 @@ RUN apt-get update && apt-get install --no-install-recommends -y \
     sudo=1.8.31-1ubuntu1.2\
     libncurses5=6.2-0ubuntu2 \
     ssh=1:8.2p1-4 \
-    graphviz=2.42.2-3build2 \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/* 
 
