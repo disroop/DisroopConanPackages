@@ -191,7 +191,7 @@ ENV HOME=/home/${USERNAME}
 USER ${USERNAME}
 WORKDIR ${HOME}
 
-ENV CLION_VERSION=CLion-2021.1.2
+ENV CLION_VERSION=CLion-2021.1.3
 ENV CLION_INSTALL_DIR="${CLION_VERSION}"
 ENV CLION_CONFIG_DIR=".${CLION_VERSION}"
 
@@ -227,4 +227,4 @@ wget --progress=dot:giga https://plugins.jetbrains.com/files/7125/119202/GrepCon
 unzip "./*.zip" -d $targetdir && \
 rm ./*.zip
 
-ENTRYPOINT ["/home/dev/CLion-2021.1.2/bin/clion.sh"]
+ENTRYPOINT ["/home/dev/CLion-2021.1.3/bin/clion.sh"]
