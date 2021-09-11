@@ -11,7 +11,7 @@ class GccArmNoneEabi(ConanFile):
     # Implement source() and build() as usual
     def source(self):
         if self.settings.os == "Linux":
-            tools.download("https://disroop.jfrog.io/artifactory/third-party-mirror/gcc-arm-none-eabi-10-2020-q4-major-x86_64-linux.tar.bz2", "arm-gcc.tar.bz2", md5="8312c4c91799885f222f663fc81f9a31")
+            tools.download("https://disroopartifacts.jfrog.io/artifactory/thirdparty-generic-local/gcc-arm-none-eabi-10-2020-q4-major-x86_64-linux.tar.bz2", "arm-gcc.tar.bz2", md5="8312c4c91799885f222f663fc81f9a31")
             self.run("mkdir toolchain && tar -xvjf arm-gcc.tar.bz2 -C toolchain --strip-components=1")
         elif tools.is_apple_os(self.settings.os):
             tools.download("https://developer.arm.com/-/media/Files/downloads/gnu-rm/10-2020q4/gcc-arm-none-eabi-10-2020-q4-major-mac.tar.bz2?revision=48a4e09a-eb5a-4eb8-8b11-d65d7e6370ff&la=en&hash=8AACA5F787C5360D2C3C50647C52D44BCDA1F73F", "arm-gcc.tar.bz2", md5="e588d21be5a0cc9caa60938d2422b058")
