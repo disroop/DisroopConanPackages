@@ -8,7 +8,7 @@ RUN apt-get update && apt-get install --no-install-recommends -y \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
-COPY sources.list /etc/apt/sources.list 
+#COPY sources.list /etc/apt/sources.list 
 
 
 ENV DEBIAN_FRONTEND=noninteractive
@@ -19,8 +19,8 @@ ENV AM_I_IN_A_DISROOP_DOCKER_CONTAINER Yes
 RUN apt-get update && apt-get install --no-install-recommends -y \
     apt-utils=2.0.6 \
     python3=3.8.2-0ubuntu2 \
-    python3-pip=20.0.2-5ubuntu1.5 \
-    git=1:2.25.1-1ubuntu3 \
+    python3-pip=20.0.2-5ubuntu1.6 \
+    git=1:2.25.1-1ubuntu3.2 \
     clang-10=1:10.0.0-4ubuntu1 \
     clang-tidy-10=1:10.0.0-4ubuntu1\
     clang-format-10=1:10.0.0-4ubuntu1 \
@@ -44,19 +44,19 @@ RUN ln -s /usr/bin/llvm-cov-11 /usr/bin/llvm-cov \
     && ln -s /usr/bin/pip3 /usr/bin/pip
 
 #Set Install PIP Packages
-RUN pip3 install --no-cache-dir conan==1.36.0 invoke==1.5.0 mumoco==0.2.1
+RUN pip3 install --no-cache-dir conan==1.40.1 invoke==1.5.0 mumoco==0.3.2
 
 # Add Setup Script
 COPY setup.sh /run/setup.sh
 RUN chmod +x /run/setup.sh \
     && ln -s /run/setup.sh /usr/bin/setup
 
-#Install Cmake 3.20.5
+#Install Cmake 3.21.3
 RUN apt-get update && apt-get install --no-install-recommends -y \
     wget=1.20.3-1ubuntu1 \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/* \
-    && wget --progress=dot:giga -qO- "https://disroop.jfrog.io/artifactory/third-party-mirror/cmake-3.20.5-linux-x86_64.tar.gz" | tar --strip-components=1 -xz -C /usr/local
+    && wget --progress=dot:giga -qO- "https://disroopartifacts.jfrog.io/artifactory/thirdparty-generic-local/cmake-3.21.3.tar.gz" | tar --strip-components=1 -xz -C /usr/local
 
 #################### sonar-scanner ####################
 FROM build-system AS sonar
@@ -68,14 +68,14 @@ RUN apt-get update && apt-get install --no-install-recommends -y \
 
 # Sonar Build Wrapper
 ARG BUILD_WRAPPER_HOME=/opt/build-wrapper-linux-x86
-RUN wget --progress=dot:giga -O /opt/build-wrapper-linux-x86.zip https://disroop.jfrog.io/artifactory/third-party-mirror/sonar-cloud-build-wrapper-linux-x86.zip \
+RUN wget --progress=dot:giga -O /opt/build-wrapper-linux-x86.zip https://disroopartifacts.jfrog.io/artifactory/thirdparty-generic-local/build-wrapper-linux-x86.zip \
     && unzip /opt/build-wrapper-linux-x86.zip -d /opt \
     && rm /opt/build-wrapper-linux-x86.zip
 ENV BUILD_WRAPPER_HOME=${BUILD_WRAPPER_HOME} PATH=${BUILD_WRAPPER_HOME}:${PATH}
 RUN ln -s ${BUILD_WRAPPER_HOME}/build-wrapper-linux-x86-64 ${BUILD_WRAPPER_HOME}/build-wrapper
 
 # Sonar Scanner
-RUN wget --progress=dot:giga -O /opt/sonar-scanner-cli.zip https://disroop.jfrog.io/artifactory/third-party-mirror/sonar-scanner-cli-4.6.2.2472-linux.zip \
+RUN wget --progress=dot:giga -O /opt/sonar-scanner-cli.zip https://disroopartifacts.jfrog.io/artifactory/thirdparty-generic-local/sonar-scanner-cli-4.6.2.2472-linux.zip\
     && unzip /opt/sonar-scanner-cli.zip -d /opt \
     && rm /opt/sonar-scanner-cli.zip
 
@@ -93,10 +93,10 @@ ARG USER_GID=$USER_UID
 #
 #Install specific devtools
 RUN apt-get update && apt-get install --no-install-recommends -y \
-    vim=2:8.1.2269-1ubuntu5 \
+    vim=2:8.1.2269-1ubuntu5.3 \
     sudo=1.8.31-1ubuntu1.2\
     libncurses5=6.2-0ubuntu2 \
-    ssh=1:8.2p1-4 \
+    ssh=1:8.2p1-4ubuntu0.3 \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/* 
 
@@ -108,7 +108,7 @@ RUN pip3 install --no-cache-dir pylint==2.6.0
 ARG TMP_JLINK_TGZ=/tmp
 ARG TAR_NAME=JLink_Linux_x86_64.tgz
 ARG FOLDER_JLINK=/opt/segger-jlink
-RUN wget --progress=dot:giga https://disroop.jfrog.io/artifactory/third-party-mirror/JLink_Linux_V750_x86_64.tgz --directory-prefix=$TMP_JLINK_TGZ \
+RUN wget --progress=dot:giga https://disroopartifacts.jfrog.io/artifactory/thirdparty-generic-local/JLink_Linux_V750_x86_64.tgz --directory-prefix=$TMP_JLINK_TGZ \
     && mkdir ${FOLDER_JLINK} && tar -xzvf $TMP_JLINK_TGZ/JLink_Linux_V750_x86_64.tgz -C ${FOLDER_JLINK} --strip 1 \
     && rm ${FOLDER_JLINK}/JLinkConfigExe \
     && rm ${FOLDER_JLINK}/JLinkGDBServerExe \
@@ -151,7 +151,7 @@ SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 ENV DEBIAN_FRONTEND=dialog
 
 RUN apt-get update && apt-get install --no-install-recommends -y \
-    openssh-server=1:8.2p1-4ubuntu0.2 \
+    openssh-server=1:8.2p1-4ubuntu0.3 \
     rsync=3.1.3-8 
 
 #Define  new password
