@@ -4,7 +4,7 @@ FROM ubuntu:20.04 AS build-system
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 
 RUN apt-get update && apt-get install --no-install-recommends -y \
-    ca-certificates=20210119~20.04.1 \
+    ca-certificates=20210119~20.04.2 \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
