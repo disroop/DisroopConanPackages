@@ -8,7 +8,7 @@ This repository contains multiple conan packages and Dockerfiles to develop new 
 
 [.underline]#You can find the conan packages here:#
 
-https://disroop.jfrog.io/ui/repos/tree/General/disroop-conan
+https://disroopartifacts.jfrog.io/ui/repos/tree/General/
 
 [.underline]#You can find the docker images here:#
 
