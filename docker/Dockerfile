@@ -56,7 +56,7 @@ RUN apt-get update && apt-get install --no-install-recommends -y \
     wget=1.20.3-1ubuntu1 \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/* \
-    && wget --progress=dot:giga -qO- "https://disroopartifacts.jfrog.io/artifactory/thirdparty-generic-local/cmake-3.21.3.tar.gz" | tar --strip-components=1 -xz -C /usr/local
+    && wget --progress=dot:giga -qO- "https://disroopartifacts.jfrog.io/artifactory/thirdparty-generic-local/cmake-3.21.3-linux-x86_64.tar.gz" | tar --strip-components=1 -xz -C /usr/local
 
 #################### sonar-scanner ####################
 FROM build-system AS sonar
