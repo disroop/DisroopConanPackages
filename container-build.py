@@ -23,7 +23,7 @@ def run_build(docker_image, container_command):
 
     client = docker.from_env()
     container = client.containers.run(image=docker_image, command=container_command, remove=True,
-                                      working_dir="/app", volumes={current_path: {'bind': '/app', 'mode': 'rw'}}, detach=True)
+                                      working_dir="/app", volumes={current_path: {'bind': '/app', 'mode': 'rw'}})
     hasError = False
     for line in container.logs(stream=True):
         text = str(line.strip())
