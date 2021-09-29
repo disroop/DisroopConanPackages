@@ -1,6 +1,8 @@
 import os
 
-from conans import ConanFile, CMake, tools
+from conans import ConanFile, tools
+from conan.tools.cmake import CMake, CMakeToolchain
+from conans.errors import ConanInvalidConfiguration
 
 hal_version = "1.13.0"
 
@@ -15,7 +17,7 @@ class Stm32HalL4(ConanFile):
     version = f"{hal_version}"
     license = "MIT"
     description = "HAL_defined for STM32"
-    generators = "cmake", "cmake_vars",
+    generators = "CMakeDeps","CMakeToolchain"
     settings = "os", "compiler", "build_type", "arch"
     exports_sources = "CMakeLists.txt", "include/*.h",
     options = {"device": ["STM32L476xx","STM32L475xx"],
@@ -139,8 +141,72 @@ class Stm32HalL4(ConanFile):
         "use_spi_crc": True,
     }
 
+    def generate(self):
+        tc = CMakeToolchain(self)
+        if self.settings.arch == "armv7":
+            tc.variables["CMAKE_TRY_COMPILE_TARGET_TYPE"] = "STATIC_LIBRARY"
+            tc.variables["CMAKE_SYSTEM_NAME"] = "Generic"
+        tc.variables["CONAN_OPT_DEVICE"] = self.options.device
+        tc.variables["CONAN_OPT_HAL_MODULE_ENABLED"] = self.options.hal_module_enabled
+        tc.variables["CONAN_OPT_HAL_ADC_MODULE_ENABLED"] = self.options.hal_adc_module_enabled
+        tc.variables["CONAN_OPT_HAL_CAN_MODULE_ENABLED"] = self.options.hal_can_module_enabled
+        tc.variables["CONAN_OPT_HAL_CAN_LEGACY_MODULE_ENABLED"] = self.options.hal_can_legacy_module_enabled
+        tc.variables["CONAN_OPT_HAL_COMP_MODULE_ENABLED"] = self.options.hal_comp_module_enabled
+        tc.variables["CONAN_OPT_HAL_CORTEX_MODULE_ENABLED"] = self.options.hal_cortex_module_enabled
+        tc.variables["CONAN_OPT_HAL_CRC_MODULE_ENABLED"] = self.options.hal_crc_module_enabled
+        tc.variables["CONAN_OPT_HAL_CRYP_MODULE_ENABLED"] = self.options.hal_cryp_module_enabled
+        tc.variables["CONAN_OPT_HAL_DAC_MODULE_ENABLED"] = self.options.hal_dac_module_enabled
+        tc.variables["CONAN_OPT_HAL_DFSDM_MODULE_ENABLED"] = self.options.hal_dfsdm_module_enabled
+        tc.variables["CONAN_OPT_HAL_DMA_MODULE_ENABLED"] = self.options.hal_dma_module_enabled
+        tc.variables["CONAN_OPT_HAL_FLASH_MODULE_ENABLED"] = self.options.hal_flash_module_enabled
+        tc.variables["CONAN_OPT_HAL_NAND_MODULE_ENABLED"] = self.options.hal_nand_module_enabled
+        tc.variables["CONAN_OPT_HAL_NOR_MODULE_ENABLED"] = self.options.hal_nor_module_enabled
+        tc.variables["CONAN_OPT_HAL_SRAM_MODULE_ENABLED"] = self.options.hal_sram_module_enabled
+        tc.variables["CONAN_OPT_HAL_GPIO_MODULE_ENABLED"] = self.options.hal_gpio_module_enabled
+        tc.variables["CONAN_OPT_HAL_I2C_MODULE_ENABLED"] = self.options.hal_i2c_module_enabled
+        tc.variables["CONAN_OPT_HAL_IWDG_MODULE_ENABLED"] = self.options.hal_iwdg_module_enabled
+        tc.variables["CONAN_OPT_HAL_LCD_MODULE_ENABLED"] = self.options.hal_lcd_module_enabled
+        tc.variables["CONAN_OPT_HAL_LPTIM_MODULE_ENABLED"] = self.options.hal_lptim_module_enabled
+        tc.variables["CONAN_OPT_HAL_OPAMP_MODULE_ENABLED"] = self.options.hal_opamp_module_enabled
+        tc.variables["CONAN_OPT_HAL_PWR_MODULE_ENABLED"] = self.options.hal_pwr_module_enabled
+        tc.variables["CONAN_OPT_HAL_QSPI_MODULE_ENABLED"] = self.options.hal_qspi_module_enabled
+        tc.variables["CONAN_OPT_HAL_RCC_MODULE_ENABLED"] = self.options.hal_rcc_module_enabled
+        tc.variables["CONAN_OPT_HAL_RNG_MODULE_ENABLED"] = self.options.hal_rng_module_enabled
+        tc.variables["CONAN_OPT_HAL_RTC_MODULE_ENABLED"] = self.options.hal_rtc_module_enabled
+        tc.variables["CONAN_OPT_HAL_SAI_MODULE_ENABLED"] = self.options.hal_sai_module_enabled
+        tc.variables["CONAN_OPT_HAL_SD_MODULE_ENABLED"] = self.options.hal_sd_module_enabled
+        tc.variables["CONAN_OPT_HAL_SMBUS_MODULE_ENABLED"] = self.options.hal_smbus_module_enabled
+        tc.variables["CONAN_OPT_HAL_SPI_MODULE_ENABLED"] = self.options.hal_spi_module_enabled
+        tc.variables["CONAN_OPT_HAL_SWPMI_MODULE_ENABLED"] = self.options.hal_swpmi_module_enabled
+        tc.variables["CONAN_OPT_HAL_TIM_MODULE_ENABLED"] = self.options.hal_tim_module_enabled
+        tc.variables["CONAN_OPT_HAL_TSC_MODULE_ENABLED"] = self.options.hal_tsc_module_enabled
+        tc.variables["CONAN_OPT_HAL_UART_MODULE_ENABLED"] = self.options.hal_uart_module_enabled
+        tc.variables["CONAN_OPT_HAL_USART_MODULE_ENABLED"] = self.options.hal_usart_module_enabled
+        tc.variables["CONAN_OPT_HAL_IRDA_MODULE_ENABLED"] = self.options.hal_irda_module_enabled
+        tc.variables["CONAN_OPT_HAL_SMARTCARD_MODULE_ENABLED"] = self.options.hal_smartcard_module_enabled
+        tc.variables["CONAN_OPT_HAL_WWDG_MODULE_ENABLED"] = self.options.hal_wwdg_module_enabled
+        tc.variables["CONAN_OPT_HAL_PCD_MODULE_ENABLED"] = self.options.hal_pcd_module_enabled
+        tc.variables["CONAN_OPT_HAL_HCD_MODULE_ENABLED"] = self.options.hal_hcd_module_enabled
+        tc.variables["CONAN_OPT_HSE_VALUE"] = self.options.hse_value
+        tc.variables["CONAN_OPT_HSE_STARTUP_TIMEOUT"] = self.options.hse_startup_timeout
+        tc.variables["CONAN_OPT_MSI_VALUE"] = self.options.msi_value
+        tc.variables["CONAN_OPT_HSI_VALUE"] = self.options.hsi_value
+        tc.variables["CONAN_OPT_LSI_VALUE"] = self.options.lsi_value
+        tc.variables["CONAN_OPT_LSE_VALUE"] = self.options.lse_value
+        tc.variables["CONAN_OPT_LSE_STARTUP_TIMEOUT"] = self.options.lse_startup_timeout
+        tc.variables["CONAN_OPT_EXTERNAL_SAI1_CLOCK_VALUE"] = self.options.external_sai1_clock_value
+        tc.variables["CONAN_OPT_EXTERNAL_SAI2_CLOCK_VALUE"] = self.options.external_sai2_clock_value
+        tc.variables["CONAN_OPT_VDD_VALUE"] = self.options.vdd_value
+        tc.variables["CONAN_OPT_TICK_INT_PRIORITY"] = self.options.tick_int_priority
+        tc.variables["CONAN_OPT_USE_RTOS"] = self.options.use_rtos
+        tc.variables["CONAN_OPT_PREFETCH_ENABLE"] = self.options.prefetch_enable
+        tc.variables["CONAN_OPT_INSTRUCTION_CACHE_ENABLE"] = self.options.instruction_cache_enable
+        tc.variables["CONAN_OPT_DATA_CACHE_ENABLE"] = self.options.data_cache_enable
+        tc.variables["CONAN_OPT_USE_FULL_ASSERT"] = self.options.use_full_assert
+        tc.variables["CONAN_OPT_USE_SPI_CRC"] = self.options.use_spi_crc
+        tc.generate()
+
     def requirements(self):
-        self.requires(f"cmake_vars/1.0.0@{project_username}/{project_channel}",private=True)
         self.requires(
             f"stm32_cmsis_core/5.6.0_cm4@{project_username}/{project_channel}")
         self.requires(
@@ -158,7 +224,7 @@ class Stm32HalL4(ConanFile):
                   dst = "include/Legacy", excludes = "*template.h", keep_path = False)
         self.copy("*.h", src = f"{self.source_folder}/include",
                   dst = "include", excludes = "*template.h", keep_path = False)
-        self.copy("*.a",  src = "lib", dst = "lib", keep_path = False)
+        self.copy("*.a",  src =".", dst = "lib", keep_path = False)
 
     def package_info(self):
         self.cpp_info.libs.append(f"{self.name}")
@@ -188,6 +254,10 @@ class Stm32HalL4(ConanFile):
                 self.cpp_info.defines.append(f"{optionstr}")
 
     def build(self):
-        cmake = CMake(self)
-        cmake.configure()
-        cmake.build()
+        if self.settings.arch == "armv7":
+            cmake = CMake(self)
+            cmake.configure()
+            cmake.build()
+        else:
+            raise ConanInvalidConfiguration("Only armv7 builds are supported")
+

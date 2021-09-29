@@ -1,6 +1,6 @@
 import os
 
-from conans import ConanFile, CMake, tools
+from conans import ConanFile, tools
 
 device_version="1.7.1"
 project_version = os.getenv("PROJECT_VERSION", "snapshot")
@@ -16,7 +16,7 @@ class Stm32CmsisDeviceL4(ConanFile):
     user = f"{project_username}"
     license = "MIT"
     description = "This is the runtime setup of CMSIS devices provided by stm"
-    generators = "virtualenv", "cmake"
+    generators = "virtualenv"
     settings = "os", "compiler", "build_type", "arch"
     exports_sources = "CMakeLists.txt"
 

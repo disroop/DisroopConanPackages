@@ -8,7 +8,7 @@ project_version = os.getenv("PROJECT_VERSION", "snapshot")
 project_username = os.getenv("CONAN_USERNAME", "disroop")
 project_channel = os.getenv("CONAN_CHANNEL", "development")
 class Stm32BspIotNodeTest(ConanFile):
-    name = "test_cmake_vars"
+    name = "test_stm_bsp_iot_node"
     version = f"{project_version}"
     license = "closed"
     url = "TODO"

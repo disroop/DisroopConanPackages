@@ -1,7 +1,8 @@
 import os
 
-from conans import ConanFile, CMake, tools
-from conan.tools.cmake import CMake, CMakeDeps
+from conans import ConanFile, CMake
+from conan.tools.cmake import CMake
+from conans.errors import ConanInvalidConfiguration
 
 project_version = os.getenv("PROJECT_VERSION", "snapshot")
 project_username = os.getenv("CONAN_USERNAME", "disroop")
@@ -50,6 +51,9 @@ class Stm32BspIotNode(ConanFile):
 
 
     def build(self):
-        cmake = CMake(self)
-        cmake.configure()
-        cmake.build()
+        if self.settings.arch == "armv7":
+            cmake = CMake(self)
+            cmake.configure()
+            cmake.build()
+        else:
+            raise ConanInvalidConfiguration("Only armv7 builds are supported")

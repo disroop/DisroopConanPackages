@@ -1,15 +1,13 @@
 cmake_minimum_required(VERSION 3.16)
-include(${CMAKE_CURRENT_BINARY_DIR}/cmake_vars.cmake)
-include(${CMAKE_CURRENT_BINARY_DIR}/conanbuildinfo.cmake)
 
 project(STM32_HAL_L4 C)
-
 set(CMAKE_C_STANDARD 99)
 
-conan_basic_setup()
-
-set(LIBRARY_NAME ${CONAN_PACKAGE_NAME})
+set(LIBRARY_NAME stm32_hal_l4)
 set(STM_HAL_DIR ${CMAKE_CURRENT_LIST_DIR}/hal_driver)
+
+find_package(stm32_cmsis_core REQUIRED)
+find_package(stm32_cmsis_device_l4 REQUIRED)
 
 set(SOURCES 
     ${STM_HAL_DIR}/Src/stm32l4xx_hal_adc_ex.c
@@ -277,8 +275,9 @@ string(REPLACE XX
 
 set(DEFINES ${CONAN_OPT_DEVICE_MAN} ${DEFINES})
 
-if(${CMAKE_SYSTEM_NAME} STREQUAL "Generic")
+if(${CMAKE_CROSSCOMPILING})
     add_library(${LIBRARY_NAME} STATIC ${SOURCES})
-    target_include_directories(${LIBRARY_NAME} PUBLIC ${CMAKE_CURRENT_LIST_DIR}/include ${STM_HAL_DIR}/Inc PRIVATE ${CONAN_INCLUDE_DIR_STM32_CMSIS_CORE} ${CONAN_INCLUDE_DIR_STM32_DEVICE_L4})
-    target_compile_definitions(${LIBRARY_NAME} PUBLIC ${DEFINES} ${CONAN_DEFINES})
+    target_link_libraries(${LIBRARY_NAME} PRIVATE stm32_cmsis_core::stm32_cmsis_core stm32_cmsis_device_l4::stm32_cmsis_device_l4)
+    target_include_directories(${LIBRARY_NAME} PUBLIC ${STM_HAL_DIR}/Inc ${CMAKE_CURRENT_LIST_DIR}/include)
+    target_compile_definitions(${LIBRARY_NAME} PUBLIC ${DEFINES})
 endif()

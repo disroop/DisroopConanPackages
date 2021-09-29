@@ -1,3 +1,3 @@
 #!/bin/bash
-mumoco --create --root recipes
+mumoco create --root recipes
 

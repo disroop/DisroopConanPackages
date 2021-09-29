@@ -1,7 +1,7 @@
 import os
 
-from conans import ConanFile, CMake, tools
-from conan.tools.cmake import CMake, CMakeDeps
+from conans import ConanFile
+from conan.tools.cmake import CMake
 
 project_version = os.getenv("PROJECT_VERSION", "snapshot")
 project_username = os.getenv("CONAN_USERNAME", "disroop")
