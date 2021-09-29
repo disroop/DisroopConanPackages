@@ -22,6 +22,7 @@ RUN apt-get update && apt-get install --no-install-recommends -y \
     python3-pip=20.0.2-5ubuntu1.6 \
     git=1:2.25.1-1ubuntu3.2 \
     clang-10=1:10.0.0-4ubuntu1 \
+    clangd-12=1:12.0.0-3ubuntu1~20.04.4 \
     clang-tidy-10=1:10.0.0-4ubuntu1\
     clang-format-10=1:10.0.0-4ubuntu1 \
     iwyu=8.0-3build1 \
@@ -35,6 +36,7 @@ RUN apt-get update && apt-get install --no-install-recommends -y \
 
 #Set sym links to tools
 RUN ln -s /usr/bin/llvm-cov-11 /usr/bin/llvm-cov \
+    && ln -s /usr/bin/clang-12 /usr/bin/clangd \
     && ln -s /usr/bin/clang-10 /usr/bin/clang \
     && ln -s /usr/bin/clang++-10 /usr/bin/clang++\
     && ln -s /usr/bin/clang-tidy-10 /usr/bin/clang-tidy \
@@ -44,7 +46,7 @@ RUN ln -s /usr/bin/llvm-cov-11 /usr/bin/llvm-cov \
     && ln -s /usr/bin/pip3 /usr/bin/pip
 
 #Set Install PIP Packages
-RUN pip3 install --no-cache-dir conan==1.40.1 invoke==1.5.0 mumoco==0.3.2
+RUN pip3 install --no-cache-dir conan==1.40.2 invoke==1.5.0 mumoco==0.3.3
 
 # Add Setup Script
 COPY setup.sh /run/setup.sh
