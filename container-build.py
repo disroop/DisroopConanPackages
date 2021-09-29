@@ -41,6 +41,6 @@ if __name__ == "__main__":
     args = get_args()
     bash_command = "./build.sh"
     if args.upload:
-        bash_command += f"; mumoco --root recipes --remotes --username {args.username} --password {args.password} --upload disroop-conan"
+        bash_command += f"; mumoco remotes --username {args.username} --password {args.password} upload disroop-conan"
     command = f"/bin/bash -c '{bash_command}'"
     run_build("disroop/embedded-hipster:0.6.12", command)
