@@ -28,7 +28,7 @@ def run_build(docker_image, container_command):
     for line in container.logs(stream=True):
         text = str(line.strip())
         print(text)
-        if re.search('ERROR', text, re.IGNORECASE):
+        if re.search('ERROR:', text, re.IGNORECASE):
             hasError = True
     if hasError:
         print(f'Failed to run container')
