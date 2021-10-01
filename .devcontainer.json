@@ -1,6 +1,6 @@
 {
 	"name": "C-Builder",
-	"image": "disroop/embedded-hipster-dev:0.6.12",
+	"image": "disroop/embedded-hipster-dev:0.6.13",
 	"runArgs": ["--cap-add=SYS_PTRACE", "--security-opt", "seccomp=unconfined"],
 	"postCreateCommand": "setup && mumuco --config ~/recipes/config-build.json --remotes",
 	"settings": { 
