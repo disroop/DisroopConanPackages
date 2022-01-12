@@ -73,8 +73,7 @@ ARG BUILD_WRAPPER_HOME=/opt/build-wrapper-linux-x86
 RUN wget --progress=dot:giga -O /opt/build-wrapper-linux-x86.zip https://disroopartifacts.jfrog.io/artifactory/thirdparty-generic-local/build-wrapper-linux-x86.zip \
     && unzip /opt/build-wrapper-linux-x86.zip -d /opt \
     && rm /opt/build-wrapper-linux-x86.zip
-ENV BUILD_WRAPPER_HOME=${BUILD_WRAPPER_HOME} 
-=${BUILD_WRAPPER_HOME}:${PATH}
+ENV BUILD_WRAPPER_HOME=${BUILD_WRAPPER_HOME} PATH=${BUILD_WRAPPER_HOME}:${PATH}
 RUN ln -s ${BUILD_WRAPPER_HOME}/build-wrapper-linux-x86-64 ${BUILD_WRAPPER_HOME}/build-wrapper
 
 # Sonar Scanner
