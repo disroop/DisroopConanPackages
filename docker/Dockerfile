@@ -46,14 +46,15 @@ RUN ln -s /usr/bin/llvm-cov-11 /usr/bin/llvm-cov \
     && ln -s /usr/bin/pip3 /usr/bin/pip
 
 #Set Install PIP Packages
-RUN pip3 install --no-cache-dir conan==1.40.3 invoke==1.5.0 mumoco==0.3.3
+COPY requirements.txt /run/requirements.txt
+RUN pip3 install --no-cache-dir -r /run/requirements.txt
 
 # Add Setup Script
 COPY setup.sh /run/setup.sh
 RUN chmod +x /run/setup.sh \
     && ln -s /run/setup.sh /usr/bin/setup
 
-#Install Cmake 3.21.3
+#Install Cmake 3.21.4
 RUN apt-get update && apt-get install --no-install-recommends -y \
     wget=1.20.3-1ubuntu1 \
     && apt-get clean \
