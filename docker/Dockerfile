@@ -204,7 +204,7 @@ RUN wget --progress=dot:giga https://download-cf.jetbrains.com/cpp/${CLION_IDE_T
     && tar xvf ${CLION_IDE_TAR} \
     &&  mv clion-* ${CLION_INSTALL_DIR} \
     && rm ${CLION_IDE_TAR}
-ENV PATH="$PATH:"$WORKDIR/${CLION_VERSION}/bin/clion.sh"
+ENV PATH="$PATH:$WORKDIR/${CLION_VERSION}/bin/clion.sh"
 
 ENV CLION_PROJECT_DIR="CLionProjects"
 RUN mkdir -p \
