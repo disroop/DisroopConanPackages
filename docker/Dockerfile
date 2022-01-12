@@ -73,7 +73,8 @@ ARG BUILD_WRAPPER_HOME=/opt/build-wrapper-linux-x86
 RUN wget --progress=dot:giga -O /opt/build-wrapper-linux-x86.zip https://disroopartifacts.jfrog.io/artifactory/thirdparty-generic-local/build-wrapper-linux-x86.zip \
     && unzip /opt/build-wrapper-linux-x86.zip -d /opt \
     && rm /opt/build-wrapper-linux-x86.zip
-ENV BUILD_WRAPPER_HOME=${BUILD_WRAPPER_HOME} PATH=${BUILD_WRAPPER_HOME}:${PATH}
+ENV BUILD_WRAPPER_HOME=${BUILD_WRAPPER_HOME} 
+=${BUILD_WRAPPER_HOME}:${PATH}
 RUN ln -s ${BUILD_WRAPPER_HOME}/build-wrapper-linux-x86-64 ${BUILD_WRAPPER_HOME}/build-wrapper
 
 # Sonar Scanner
@@ -126,6 +127,7 @@ RUN wget --progress=dot:giga https://disroopartifacts.jfrog.io/artifactory/third
     && rm ${FOLDER_JLINK}/JLinkLicenseManagerExe \
     && rm -rf ${FOLDER_JLINK}/Samples
 ENV PATH="${FOLDER_JLINK}:${PATH}"
+
 #
 # Create a non-root user to use if preferred - see https://aka.ms/vscode-remote/containers/non-root-user.
 RUN groupadd --gid $USER_GID $USERNAME \
@@ -193,7 +195,7 @@ ENV HOME=/home/${USERNAME}
 USER ${USERNAME}
 WORKDIR ${HOME}
 
-ENV CLION_VERSION=CLion-2021.2
+ENV CLION_VERSION=CLion-2021.3
 ENV CLION_INSTALL_DIR="${CLION_VERSION}"
 ENV CLION_CONFIG_DIR=".${CLION_VERSION}"
 
@@ -203,6 +205,7 @@ RUN wget --progress=dot:giga https://download-cf.jetbrains.com/cpp/${CLION_IDE_T
     && tar xvf ${CLION_IDE_TAR} \
     &&  mv clion-* ${CLION_INSTALL_DIR} \
     && rm ${CLION_IDE_TAR}
+ENV PATH="$PATH:"$WORKDIR/${CLION_VERSION}/bin/clion.sh"
 
 ENV CLION_PROJECT_DIR="CLionProjects"
 RUN mkdir -p \
@@ -229,4 +232,4 @@ wget --progress=dot:giga https://plugins.jetbrains.com/files/7125/119202/GrepCon
 unzip "./*.zip" -d $targetdir && \
 rm ./*.zip
 
-ENTRYPOINT ["/home/dev/CLion-2021.2/bin/clion.sh"]
+ENTRYPOINT ["/home/dev/CLion-2021.3/bin/clion.sh"]
