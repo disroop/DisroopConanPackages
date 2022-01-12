@@ -59,7 +59,8 @@ RUN apt-get update && apt-get install --no-install-recommends -y \
     wget=1.20.3-1ubuntu1 \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/* \
-    && wget --progress=dot:giga -qO- "https://disroopartifacts.jfrog.io/artifactory/thirdparty-generic-local/cmake-3.21.3-linux-x86_64.tar.gz" | tar --strip-components=1 -xz -C /usr/local
+    && wget --progress=dot:giga -qO- "https://disroopartifacts2.jfrog.io/artifactory/thirdparty-generic-local/cmake-3.21.4.tar.gz" | tar --strip-components=1 -xz -C /usr/local
+#from https://github.com/Kitware/CMake/releases/download/v3.21.4/cmake-3.21.4.tar.gz
 
 #################### sonar-scanner ####################
 FROM build-system AS sonar
@@ -71,14 +72,16 @@ RUN apt-get update && apt-get install --no-install-recommends -y \
 
 # Sonar Build Wrapper
 ARG BUILD_WRAPPER_HOME=/opt/build-wrapper-linux-x86
-RUN wget --progress=dot:giga -O /opt/build-wrapper-linux-x86.zip https://disroopartifacts.jfrog.io/artifactory/thirdparty-generic-local/build-wrapper-linux-x86.zip \
+#from https://sonarcloud.io/static/cpp/build-wrapper-linux-x86.zip
+RUN wget --progress=dot:giga -O /opt/build-wrapper-linux-x86.zip https://disroopartifacts2.jfrog.io/artifactory/thirdparty-generic-local/build-wrapper-linux-x86.zip \
     && unzip /opt/build-wrapper-linux-x86.zip -d /opt \
     && rm /opt/build-wrapper-linux-x86.zip
 ENV BUILD_WRAPPER_HOME=${BUILD_WRAPPER_HOME} PATH=${BUILD_WRAPPER_HOME}:${PATH}
 RUN ln -s ${BUILD_WRAPPER_HOME}/build-wrapper-linux-x86-64 ${BUILD_WRAPPER_HOME}/build-wrapper
 
 # Sonar Scanner
-RUN wget --progress=dot:giga -O /opt/sonar-scanner-cli.zip https://disroopartifacts.jfrog.io/artifactory/thirdparty-generic-local/sonar-scanner-cli-4.6.2.2472-linux.zip\
+#from https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-4.6.2.2472-linux.zip
+RUN wget --progress=dot:giga -O /opt/sonar-scanner-cli.zip https://disroopartifacts2.jfrog.io/artifactory/thirdparty-generic-local/sonar-scanner-cli-4.6.2.2472-linux.zip\
     && unzip /opt/sonar-scanner-cli.zip -d /opt \
     && rm /opt/sonar-scanner-cli.zip
 
@@ -111,7 +114,8 @@ RUN pip3 install --no-cache-dir pylint==2.6.0
 ARG TMP_JLINK_TGZ=/tmp
 ARG TAR_NAME=JLink_Linux_x86_64.tgz
 ARG FOLDER_JLINK=/opt/segger-jlink
-RUN wget --progress=dot:giga https://disroopartifacts.jfrog.io/artifactory/thirdparty-generic-local/JLink_Linux_V750_x86_64.tgz --directory-prefix=$TMP_JLINK_TGZ \
+#from https://www.segger.com/downloads/jlink/JLink_Linux_V750_x86_64.tgz
+RUN wget --progress=dot:giga https://disroopartifacts2.jfrog.io/artifactory/thirdparty-generic-local/JLink_Linux_V750_x86_64.tgz --directory-prefix=$TMP_JLINK_TGZ \
     && mkdir ${FOLDER_JLINK} && tar -xzvf $TMP_JLINK_TGZ/JLink_Linux_V750_x86_64.tgz -C ${FOLDER_JLINK} --strip 1 \
     && rm ${FOLDER_JLINK}/JLinkConfigExe \
     && rm ${FOLDER_JLINK}/JLinkGDBServerExe \

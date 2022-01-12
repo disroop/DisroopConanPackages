@@ -1,13 +1,13 @@
-deb https://disroopartifacts.jfrog.io/artifactory/disroop-debian-remote/ focal main restricted
+deb https://disroopartifacts2.jfrog.io/artifactory/disroop-debian-remote/ focal main restricted
 
-deb https://disroopartifacts.jfrog.io/artifactory/disroop-debian-remote/ focal-updates main restricted
+deb https://disroopartifacts2.jfrog.io/artifactory/disroop-debian-remote/ focal-updates main restricted
 
-deb https://disroopartifacts.jfrog.io/artifactory/disroop-debian-remote/ focal universe
-deb https://disroopartifacts.jfrog.io/artifactory/disroop-debian-remote/ focal-updates universe
+deb https://disroopartifacts2.jfrog.io/artifactory/disroop-debian-remote/ focal universe
+deb https://disroopartifacts2.jfrog.io/artifactory/disroop-debian-remote/ focal-updates universe
 
-deb https://disroopartifacts.jfrog.io/artifactory/disroop-debian-remote/ focal multiverse
+deb https://disroopartifacts2.jfrog.io/artifactory/disroop-debian-remote/ focal multiverse
 
-deb https://disroopartifacts.jfrog.io/artifactory/disroop-debian-remote/ focal-backports main restricted universe multiverse
+deb https://disroopartifacts2.jfrog.io/artifactory/disroop-debian-remote/ focal-backports main restricted universe multiverse
 
-deb https://disroopartifacts.jfrog.io/artifactory/disroop-debian-security/ focal-security universe
-deb https://disroopartifacts.jfrog.io/artifactory/disroop-debian-security/ focal-security multiverse
+deb https://disroopartifacts2.jfrog.io/artifactory/disroop-debian-security/ focal-security universe
+deb https://disroopartifacts2.jfrog.io/artifactory/disroop-debian-security/ focal-security multiverse
