@@ -4,8 +4,7 @@ name: Docker-Build
 on:
   # Triggers the workflow on push or pull request events but only for the master branch and if tags are created 
   push:
-    branches: [ master ]
-    paths: 
+    paths:
       - '**/docker/*'
   pull_request:
     branches: [ master ]
