@@ -6,7 +6,6 @@ import re
 
 
 def get_args():
-    cwd = os.getcwd()
     parser = argparse.ArgumentParser()
     parser.add_argument("--username", type=str, required=False,
                         default=None, help="User credentials")
@@ -18,19 +17,19 @@ def get_args():
 
 
 def run_build(docker_image, container_command):
-    client = docker.from_env()
     current_path = os.getcwd()
 
     client = docker.from_env()
     container = client.containers.run(image=docker_image, command=container_command, remove=True,
-                                      working_dir="/app", volumes={current_path: {'bind': '/app', 'mode': 'rw'}}, detach=True)
-    hasError = False
+                                      working_dir="/app", volumes={current_path: {'bind': '/app', 'mode': 'rw'}},
+                                      detach=True)
+    has_error = False
     for line in container.logs(stream=True):
         text = str(line.strip())
         print(text)
         if re.search('ERROR:', text, re.IGNORECASE):
-            hasError = True
-    if hasError:
+            has_error = True
+    if has_error:
         print(f'Failed to run container')
         exit(1)
     else:
