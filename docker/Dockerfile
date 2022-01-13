@@ -99,10 +99,10 @@ ARG USER_GID=$USER_UID
 #
 #Install specific devtools
 RUN apt-get update && apt-get install --no-install-recommends -y \
-    vim=2:8.1.2269-1ubuntu5.3 \
+    vim=2:8.1.2269-1ubuntu5.4 \
     sudo=1.8.31-1ubuntu1.2\
     libncurses5=6.2-0ubuntu2 \
-    ssh=1:8.2p1-4ubuntu0.3 \
+    ssh=1:8.2p1-4ubuntu0.4 \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/* 
 
@@ -159,7 +159,7 @@ SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 ENV DEBIAN_FRONTEND=dialog
 
 RUN apt-get update && apt-get install --no-install-recommends -y \
-    openssh-server=1:8.2p1-4ubuntu0.3 \
+    openssh-server=1:8.2p1-4ubuntu0.4 \
     rsync=3.1.3-8 
 
 #Define  new password
@@ -179,7 +179,7 @@ ENV DEBIAN_FRONTEND=noninteractive
 ## Install OpenJDK-8
 RUN apt-get update \
     && apt-get install --no-install-recommends -y \
-    openjdk-8-jdk=8u292-b10-0ubuntu1~20.04 \
+    openjdk-8-jdk=8u312-b07-0ubuntu1~20.04 \
     && apt-get clean -y \
     && rm -rf /var/lib/apt/lists/*
 
