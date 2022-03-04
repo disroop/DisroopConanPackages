@@ -5,5 +5,8 @@
         "matchStrings": ["(?<depName>disroop/embedded.*):(?<currentValue>[0-9.]+)"],
         "datasourceTemplate": "docker"
       }
-    ]
+    ],
+    "conan": {
+      "enabled": true
+    }
   }
